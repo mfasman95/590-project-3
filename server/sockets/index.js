@@ -1,18 +1,12 @@
 // #region Requires
-const chalk = require('chalk');
 const xxh = require('xxhashjs');
 const _ = require('lodash');
 
-// Add custom classes
-const {
-  Room,
-  User,
-  Message,
-} = require('./classes');
+const { reduxEmit, genericEmit } = require('./emit');
+const { clientEmitHandler } = require('./clientEventHandler');
+const { Room, User, Message } = require('./../classes');
+const { users } = require('./users');
 // #endregion Requires
-
-// #region Misc vars
-const { log } = console;
 
 // Create a reference to io, to be assigned when initSockets is called
 let io;
@@ -22,50 +16,9 @@ let io;
 // Initialize object for storing rooms
 const startingRoom = new Room('**INIT_ROOM**');
 const rooms = {};
-
-// Initialize object for storing users
-const users = {};
 // #endregion Init Rooms/Users
 
-// #region Emit Functions
-// Build functions to emit to a single client
-const emit = type => (socket, message) => {
-  const { event, data, timestamp } = message;
-
-  socket.emit('serverEmit', {
-    type,
-    event,
-    data,
-    timestamp,
-  });
-};
-const genericEmit = emit('generic');
-const reduxEmit = emit('redux');
-
-// Build functions to emit to a full room
-const emitToRoom = emitFunc => room => (message) => {
-  for (let i = 0; i < room.currentOccupancy; i++) {
-    const user = users[room.occupants[i].id];
-    if (user) emitFunc(user.socket, message);
-  }
-};
-const genericEmitToRoom = emitToRoom(genericEmit);
-const reduxEmitToRoom = emitToRoom(reduxEmit);
-// #endregion Emit Functions
-
 // #region Socket Handlers
-const clientEmitHandler = (sock, eventData) => {
-  const socket = sock;
-  const { event, data } = eventData;
-
-  // TODO: This just shows what data we are getting. Get rid of this later.
-  log(data);
-
-  switch (event) {
-    default: { log(chalk.red(`Emit ${event} received from ${socket.hash} without a handler`)); }
-  }
-};
-
 const handleConnect = (sock) => {
   const socket = sock;
 

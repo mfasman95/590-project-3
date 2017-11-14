@@ -5,7 +5,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const chalk = require('chalk');
 
-const sockets = require('./socket.js');
+const sockets = require('./sockets');
 
 const { log } = console;
 const PORT = process.env.PORT || process.env.NODE_PORT || 3000;
