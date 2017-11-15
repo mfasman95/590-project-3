@@ -10,12 +10,27 @@ module.exports = Object.freeze({
     const socket = sock;
     const { event, data } = eventData;
 
-    // TODO: This just shows what data we are getting. Get rid of this later.
-    log(data);
-
     switch (event) {
-      case 'goHome': {
-        reduxEmit(socket, new Message('CHANGE_PAGE', { page: 'Home' }));
+      case 'login': {
+        // TODO: Handle login process
+
+        reduxEmit(socket, new Message('LOGIN'));
+
+        reduxEmit(socket, new Message('CHANGE_PAGE', {
+          page: 'Home',
+        }));
+
+        break;
+      }
+      case 'logout': {
+        // TODO: Handle logout process
+
+        reduxEmit(socket, new Message('CLEAR_SESSION'));
+        reduxEmit(socket, new Message('LOGOUT'));
+
+        reduxEmit(socket, new Message('CHANGE_PAGE', {
+          page: 'Login',
+        }));
         break;
       }
       default: { log(chalk.red(`Emit ${event} received from ${socket.hash} without a handler`)); }

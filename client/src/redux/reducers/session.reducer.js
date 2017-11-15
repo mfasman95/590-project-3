@@ -1,26 +1,12 @@
 import extend from 'extend';
 
 // Set initial application state
-const initialState = {
-  loggedIn: false,
-};
+const initialState = {};
 
 // Handle actions dispatched to the reducer
 const actionHandlers = {
-  INIT: (returnState, action) => {
-    const rs = returnState;
-
-    // Set the initial rooms
-    rs.id = action.id;
-    return rs;
-  },
-  LOGIN: (returnState) => {
-    const rs = returnState;
-
-    // Set the logged in flag
-    rs.loggedIn = true;
-    return rs;
-  },
+  // Resets the session to the initial state
+  CLEAR_SESSION: () => initialState,
 };
 
 // Export the reducer

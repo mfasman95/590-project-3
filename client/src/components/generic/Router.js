@@ -14,6 +14,10 @@ class Router extends React.Component {
 }
 
 //Function to map the redux state to object properties
-const mapStateToProps = (state, ownProps) => { return { page: state.route.page } };
+const mapStateToProps = (state, ownProps) => {
+  return {
+    page: state.route.page
+  }
+};
 
 export default connect(mapStateToProps)(Router);

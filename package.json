@@ -13,7 +13,8 @@
     "client:dev": "node ./scripts/client-start.js",
     "client:build": "node ./scripts/client-build.js",
     "pretest": "eslint ./src --fix",
-    "test": "echo \"Tests complete\""
+    "test": "echo \"Tests complete\"",
+    "postinstall": "echo \"Done Installing...\""
   },
   "dependencies": {
     "chalk": "^2.3.0",

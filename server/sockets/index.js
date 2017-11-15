@@ -45,7 +45,6 @@ const handleConnect = (sock) => {
 
   // Send any necessary info for initiating the connection
   reduxEmit(socket, new Message('INIT', {
-    rooms: roomsData,
     id: hash,
   }));
 };
