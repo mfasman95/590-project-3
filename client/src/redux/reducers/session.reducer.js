@@ -1,7 +1,13 @@
 import extend from 'extend';
 
 // Set initial application state
-const initialState = {};
+const initialState = {
+  level: 0,
+  experience: 0,
+  gold: 0,
+  currentStamina: 0,
+  maxStamina: 0,
+};
 
 // Handle actions dispatched to the reducer
 const actionHandlers = {

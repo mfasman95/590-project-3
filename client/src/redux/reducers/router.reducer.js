@@ -2,7 +2,7 @@ import extend from 'extend';
 
 // Set initial application state
 const initialState = {
-  page: 'Login',
+  page: 'Home',
 };
 
 // Handle actions dispatched to the reducer

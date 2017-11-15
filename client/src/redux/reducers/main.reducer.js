@@ -2,7 +2,7 @@ import extend from 'extend';
 
 // Set initial application state
 const initialState = {
-  loggedIn: false,
+  loggedIn: true,
 };
 
 // Handle actions dispatched to the reducer
@@ -19,6 +19,12 @@ const actionHandlers = {
 
     // Set the logged in flag
     rs.loggedIn = true;
+    return rs;
+  },
+  LOGOUT: (returnState) => {
+    const rs = returnState;
+
+    rs.loggedIn = false;
     return rs;
   },
 };

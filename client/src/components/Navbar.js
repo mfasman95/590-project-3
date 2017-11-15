@@ -1,51 +1,112 @@
 import React from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Navbar, ButtonGroup, Button, FormGroup } from 'react-bootstrap';
+import { emit } from './../scripts/socket';
 
 class MainNav extends React.Component {
   render() {
     return (  
-      <Navbar>
+      <Navbar inverse collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">React-Bootstrap</a>
+            Gatcha & Dragons
           </Navbar.Brand>
         </Navbar.Header>
-        <Nav>
-          <NavItem eventKey={1} href="#">Link</NavItem>
-          <NavItem eventKey={2} href="#">Link</NavItem>
-          <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-            <MenuItem eventKey={3.1}>Action</MenuItem>
-            <MenuItem eventKey={3.2}>Another action</MenuItem>
-            <MenuItem eventKey={3.3}>Something else here</MenuItem>
-            <MenuItem divider />
-            <MenuItem eventKey={3.4}>Separated link</MenuItem>
-          </NavDropdown>
-        </Nav>
+        <Navbar.Text>
+          Level: {this.props.level}
+        </Navbar.Text>
+        <Navbar.Text>
+          Gold: {this.props.gold}
+        </Navbar.Text>
+        <Navbar.Text>
+          Stamina: {this.props.currentStamina}/{this.props.maxStamina}
+        </Navbar.Text>
+        <Navbar.Form pullRight>
+          <FormGroup>
+            <ButtonGroup>
+              <Button
+                bsStyle='primary'
+                onClick={
+                  () => {
+                    emit('changePage', { page: 'Home' });
+                  }
+                }
+              >
+                <i className='fa fa-home'/>
+              </Button>
+              <Button
+                bsStyle='primary'
+                onClick={
+                  () => {
+                    emit('changePage', { page: 'ManageParty' });
+                  }
+                }
+              >
+                <i className='fa fa-users'/>
+              </Button>
+              <Button
+                bsStyle='primary'
+                onClick={
+                  () => {
+                    emit('changePage', { page: 'Upgrades' });
+                  }
+                }
+              >
+                <i className='fa fa-level-up'/>
+              </Button>
+              <Button
+                bsStyle='primary'
+                onClick={
+                  () => {
+                    emit('changePage', { page: 'Recruit' });
+                  }
+                }
+              >
+                <i className='fa fa-superpowers'/>
+              </Button>
+              <Button
+                bsStyle='primary'
+                onClick={
+                  () => {
+                    emit('changePage', { page: 'Friends' });
+                  }
+                }
+              >
+                <i className='fa fa-address-book'/>
+              </Button>
+              <Button
+                bsStyle='primary'
+                onClick={
+                  () => {
+                    emit('changePage', { page: 'Options' });
+                  }
+                }
+              >
+                <i className='fa fa-gears'/>
+              </Button>
+              <Button
+                bsStyle='danger'
+                onClick={() => emit('logout')}
+              >
+                Logout
+              </Button>
+            </ButtonGroup>
+          </FormGroup>
+        </Navbar.Form>
       </Navbar>
     );
   }
 }
 
-export default MainNav;
+//Function to map the redux state to object properties
+const mapStateToProps = (state, ownProps) => {
+  return {
+    level: state.session.level,
+    experience: state.session.experience,
+    gold: state.session.gold,
+    currentStamina: state.session.currentStamina,
+    maxStamina: state.session.maxStamina,
+  }
+};
 
-/*
-
-Sign in page
-  Click sign in -> Go to main
-
-Navbar along the top
-- Home
-  - Exp/Stamina
-- Manage Party
-  - Entries for characters to select
-- Upgrades
-  - Currency display
-  - upgrades.paintfile
-- Recruit
-  - Currency display
-  - Make basic UI
-- Friend List
-  - Mock up with fake friends
-- Options
-  - Not yet
-*/
+export default connect(mapStateToProps)(MainNav);
