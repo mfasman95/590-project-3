@@ -13,7 +13,6 @@ const actionHandlers = {
 
     // Store updated csrf token
     rs.csrf = action.csrf;
-    console.log(action);
     return rs;
   },
   INIT: (returnState, action) => {

@@ -50,11 +50,10 @@ module.exports = Object.freeze({
   clientEmitHandler: (sock, eventData) => {
     const socket = sock;
     const { event, data, csrf } = eventData;
-    log(chalk.yellow(`${event} ${csrf}`));
 
     // Check custom csrf operation
     if (socket.csrf !== csrf) {
-      return log(chalk.bold.red(`INVALID CSRF TOKEN ${socket.csrf} ${csrf}`));
+      return log(chalk.bold.red('INVALID CSRF TOKEN'));
     }
 
     switch (event) {
