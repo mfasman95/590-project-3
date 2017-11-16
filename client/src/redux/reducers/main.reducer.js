@@ -8,6 +8,13 @@ const initialState = {
 
 // Handle actions dispatched to the reducer
 const actionHandlers = {
+  CSRF: (returnState, action) => {
+    const rs = returnState;
+
+    // Store updated csrf token
+    rs.csrf = action.csrf;
+    return rs;
+  },
   INIT: (returnState, action) => {
     const rs = returnState;
 

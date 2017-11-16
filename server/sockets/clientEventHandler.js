@@ -49,23 +49,27 @@ const changePage = (page, socket) => {
 module.exports = Object.freeze({
   clientEmitHandler: (sock, eventData) => {
     const socket = sock;
-    const { event, data } = eventData;
+    const { event, data, csrf } = eventData;
+
+    // Check custom csrf operation
+    if (socket.csrf !== csrf) {
+      return log(chalk.bold.red('INVALID CSRF TOKEN'));
+    }
 
     switch (event) {
       case 'changePage': {
-        changePage(data.page, socket);
-        break;
+        return changePage(data.page, socket);
       }
       case 'login': {
         // TODO: Handle login process
 
         reduxEmit(socket, new Message('LOGIN'));
-        changePage('Home', socket);
-        break;
+        return changePage('Home', socket);
       }
       case 'logout': {
-        changePage('Login', socket);
-        break;
+        // TODO: Handle logout process
+
+        return changePage('Login', socket);
       }
       case 'adventureStart': {
         // Populate relevant enemy and hero data
@@ -76,16 +80,14 @@ module.exports = Object.freeze({
           },
         }));
         reduxEmit(socket, new Message('ADVENTURE_START'));
-        changePage('Adventure', socket);
-        break;
+        return changePage('Adventure', socket);
       }
       case 'adventureEnd': {
         reduxEmit(socket, new Message('ADVENTURE_END'));
         changePage('Home', socket);
-        reduxEmit(socket, new Message('CLEAR_GAME_STATE'));
-        break;
+        return reduxEmit(socket, new Message('CLEAR_GAME_STATE'));
       }
-      default: { log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }
+      default: { return log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }
     }
   },
 });

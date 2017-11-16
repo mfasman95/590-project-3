@@ -17,7 +17,13 @@ connect();
 const socket = sock;
 export default socket;
 
-export const emit = (event, data) => socket.emit('clientEmit', { event, data });
+export const emit = (event, data) => {
+  socket.emit('clientEmit', {
+    event,
+    data: data || {},
+    csrf: store.getState().main.csrf,
+  });
+};
 
 const genericEmitHandler = (emitData) => {
   switch (emitData.event) {
@@ -32,6 +38,11 @@ const genericEmitHandler = (emitData) => {
 
 // Convery emits from the server directly into actions for the store
 socket.on('serverEmit', (emitData) => {
+  store.dispatch({
+    type: 'CSRF',
+    csrf: emitData.csrf,
+  });
+
   switch (emitData.type) {
     case 'redux': {
       const action = { type: emitData.event };
