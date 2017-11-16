@@ -3,6 +3,30 @@ import { connect } from 'react-redux';
 import { Navbar, ButtonGroup, Button, FormGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { emit } from './../scripts/socket';
 
+/**
+ * @param props.tooltipId - Id of the tooltip 
+ * @param props.tooltipText - Text of the tooltip 
+ * @param props.pageTarget - The page this button navigates to 
+ * @param props.disabled - Disabled state of the button (true/false)
+ * @param props.iconString - The font awesome icon string for this button 
+ */
+const OverlayNavButton = (props) => {
+  return (
+    <OverlayTrigger
+      placement='bottom'
+      overlay={<Tooltip id={`${props.tooltipId}Tooltip`}>{props.tooltipText}</Tooltip>}
+    >
+      <Button
+        bsStyle='primary'
+        onClick={() => emit('changePage', { page: props.pageTarget })}
+        disabled={props.disabled}
+      >
+        <i className={`fa ${props.iconString}`}/>
+      </Button>
+    </OverlayTrigger>
+  )
+}
+
 class MainNav extends React.Component {
   render() {
     return (  
@@ -35,82 +59,49 @@ class MainNav extends React.Component {
         <Navbar.Form pullRight>
           <FormGroup>
             <ButtonGroup>
-              <OverlayTrigger
-                placement='bottom'
-                overlay={<Tooltip id='GoHomeTooltip'>Return Home</Tooltip>}
-              >
-                <Button
-                  bsStyle='primary'
-                  onClick={() => emit('changePage', { page: 'Home' })}
-                  disabled={this.props.inGame}
-                >
-                  <i className='fa fa-home'/>
-                </Button>
-              </OverlayTrigger>
-              <OverlayTrigger
-                placement='bottom'
-                overlay={<Tooltip id='ManagePartyTooltip'>Manage Party</Tooltip>}
-              >
-                <Button
-                  bsStyle='primary'
-                  onClick={() => emit('changePage', { page: 'ManageParty' })}
-                  disabled={this.props.inGame}
-                >
-                  <i className='fa fa-users'/>
-                </Button>
-              </OverlayTrigger>
-              <OverlayTrigger
-                placement='bottom'
-                overlay={<Tooltip id='RecruitTooltip'>Recruitment Page</Tooltip>}
-              >
-                <Button
-                  bsStyle='primary'
-                  onClick={() => emit('changePage', { page: 'Recruit' })}
-                  disabled={this.props.inGame}
-                >
-                  <i className='fa fa-superpowers'/>
-                </Button>
-              </OverlayTrigger>
-              <OverlayTrigger
-                placement='bottom'
-                overlay={<Tooltip id='FriendsTooltip'>Friends List</Tooltip>}
-              >
-                <Button
-                  bsStyle='primary'
-                  onClick={() => emit('changePage', { page: 'Friends' })}
-                  disabled={this.props.inGame}
-                >
-                  <i className='fa fa-address-book'/>
-                </Button>
-              </OverlayTrigger>
-              <OverlayTrigger
-                placement='bottom'
-                overlay={<Tooltip id='PurchaseCurrencyTooltip'>Purchase Currency</Tooltip>}
-              >
-                <Button
-                  bsStyle='primary'
-                  onClick={() => emit('changePage', { page: 'MicroTransactions' })}
-                  disabled={this.props.inGame}
-                >
-                  <i className='fa fa-dollar'/>
-                </Button>
-              </OverlayTrigger>
-              <OverlayTrigger
-                placement='bottom'
-                overlay={<Tooltip id='OptionsTooltip'>Options</Tooltip>}
-              >
-                <Button
-                  bsStyle='primary'
-                  onClick={() => emit('changePage', { page: 'Options' })}
-                  disabled={this.props.inGame}
-                >
-                  <i className='fa fa-gears'/>
-                </Button>
-              </OverlayTrigger>
-              <Button
-                bsStyle='danger'
-                onClick={() => emit('logout')}
-              >
+              <OverlayNavButton
+                tooltipId='ReturnHome'
+                tooltipText='Return Home'
+                pageTarget='Home'
+                disabled={this.props.inGame}
+                iconString='fa-home'
+              />
+              <OverlayNavButton
+                tooltipId='ManageParty'
+                tooltipText='Manage Party'
+                pageTarget='ManageParty'
+                disabled={this.props.inGame}
+                iconString='fa-users'
+              />
+              <OverlayNavButton
+                tooltipId='Recruit'
+                tooltipText='Recruitment Page'
+                pageTarget='Recruit'
+                disabled={this.props.inGame}
+                iconString='fa-superpowers'
+              />
+              <OverlayNavButton
+                tooltipId='Friends'
+                tooltipText='Friend List'
+                pageTarget='Friends'
+                disabled={this.props.inGame}
+                iconString='fa-address-book'
+              />
+              <OverlayNavButton
+                tooltipId='PurchaseCurrency'
+                tooltipText='Purchase Currency'
+                pageTarget='MicroTransactions'
+                disabled={this.props.inGame}
+                iconString='fa-dollar'
+              />
+              <OverlayNavButton
+                tooltipId='Options'
+                tooltipText='Options'
+                pageTarget='Options'
+                disabled={this.props.inGame}
+                iconString='fa-gears'
+              />
+              <Button bsStyle='danger' onClick={() => emit('logout')}>
                 Logout
               </Button>
             </ButtonGroup>
