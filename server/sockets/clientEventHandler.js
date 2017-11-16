@@ -32,13 +32,15 @@ const changePage = (page, socket) => {
       // TODO: Send set of available recruitment options
       break;
     }
-    case 'Upgrades': {
-      // TODO: Send set of available characters and ways to upgrade them
+    case 'MicroTransactions': {
+      // TODO: Send set of available MicroTransaction options
       break;
     }
-    default: {
-      log(chalk.red(`ERROR: Page ${page} cannot be navigated to`));
+    case 'Adventure': {
+      // TODO: Send set of data needed for game play
+      break;
     }
+    default: { log(chalk.bold.yellow(`ERROR: Page ${page} cannot be navigated to`)); }
   }
 
   reduxEmit(socket, new Message('CHANGE_PAGE', { page }));
@@ -65,7 +67,25 @@ module.exports = Object.freeze({
         changePage('Login', socket);
         break;
       }
-      default: { log(chalk.red(`Emit ${event} received from ${socket.hash} without a handler`)); }
+      case 'adventureStart': {
+        // Populate relevant enemy and hero data
+        reduxEmit(socket, new Message('UPDATE_GAME_STATE', {
+          gameState: {
+            enemies: {},
+            heroes: {},
+          },
+        }));
+        reduxEmit(socket, new Message('ADVENTURE_START'));
+        changePage('Adventure', socket);
+        break;
+      }
+      case 'adventureEnd': {
+        reduxEmit(socket, new Message('ADVENTURE_END'));
+        changePage('Home', socket);
+        reduxEmit(socket, new Message('CLEAR_GAME_STATE'));
+        break;
+      }
+      default: { log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }
     }
   },
 });

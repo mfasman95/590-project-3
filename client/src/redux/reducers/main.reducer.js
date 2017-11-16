@@ -2,7 +2,8 @@ import extend from 'extend';
 
 // Set initial application state
 const initialState = {
-  loggedIn: true,
+  loggedIn: false,
+  inGame: false,
 };
 
 // Handle actions dispatched to the reducer
@@ -25,6 +26,18 @@ const actionHandlers = {
     const rs = returnState;
 
     rs.loggedIn = false;
+    return rs;
+  },
+  ADVENTURE_START: (returnState) => {
+    const rs = returnState;
+
+    rs.inGame = true;
+    return rs;
+  },
+  ADVENTURE_END: (returnState) => {
+    const rs = returnState;
+
+    rs.inGame = false;
     return rs;
   },
 };

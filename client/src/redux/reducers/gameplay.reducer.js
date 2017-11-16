@@ -1,19 +1,17 @@
 import extend from 'extend';
 
 // Set initial application state
-const initialState = {
-  level: 0,
-  experience: 0,
-  experienceToNextLevel: 0,
-  gold: 0,
-  currentStamina: 0,
-  maxStamina: 0,
-};
+const initialState = {};
 
 // Handle actions dispatched to the reducer
 const actionHandlers = {
-  // Resets the session to the initial state
-  CLEAR_SESSION: () => initialState,
+  UPDATE_GAME_STATE: (returnState, action) => {
+    let rs = returnState;
+
+    rs = action.gameState;
+    return rs;
+  },
+  CLEAR_GAME_STATE: () => initialState,
 };
 
 // Export the reducer

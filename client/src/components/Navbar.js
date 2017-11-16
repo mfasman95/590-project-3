@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Navbar, ButtonGroup, Button, FormGroup } from 'react-bootstrap';
+import { Navbar, ButtonGroup, Button, FormGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { emit } from './../scripts/socket';
 
 class MainNav extends React.Component {
@@ -13,7 +13,18 @@ class MainNav extends React.Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Navbar.Text>
-          Level: {this.props.level}
+          <OverlayTrigger
+            placement='bottom'
+            overlay={
+              <Tooltip
+                id='ExperienceTooltip'
+              >
+                <strong>EXP: </strong>{this.props.experience}/{this.props.experienceToNextLevel}
+              </Tooltip>
+            }
+          >
+            <span>Level: {this.props.level}</span>
+          </OverlayTrigger>
         </Navbar.Text>
         <Navbar.Text>
           Gold: {this.props.gold}
@@ -24,66 +35,78 @@ class MainNav extends React.Component {
         <Navbar.Form pullRight>
           <FormGroup>
             <ButtonGroup>
-              <Button
-                bsStyle='primary'
-                onClick={
-                  () => {
-                    emit('changePage', { page: 'Home' });
-                  }
-                }
+              <OverlayTrigger
+                placement='bottom'
+                overlay={<Tooltip id='GoHomeTooltip'>Return Home</Tooltip>}
               >
-                <i className='fa fa-home'/>
-              </Button>
-              <Button
-                bsStyle='primary'
-                onClick={
-                  () => {
-                    emit('changePage', { page: 'ManageParty' });
-                  }
-                }
+                <Button
+                  bsStyle='primary'
+                  onClick={() => emit('changePage', { page: 'Home' })}
+                  disabled={this.props.inGame}
+                >
+                  <i className='fa fa-home'/>
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                placement='bottom'
+                overlay={<Tooltip id='ManagePartyTooltip'>Manage Party</Tooltip>}
               >
-                <i className='fa fa-users'/>
-              </Button>
-              <Button
-                bsStyle='primary'
-                onClick={
-                  () => {
-                    emit('changePage', { page: 'Upgrades' });
-                  }
-                }
+                <Button
+                  bsStyle='primary'
+                  onClick={() => emit('changePage', { page: 'ManageParty' })}
+                  disabled={this.props.inGame}
+                >
+                  <i className='fa fa-users'/>
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                placement='bottom'
+                overlay={<Tooltip id='RecruitTooltip'>Recruitment Page</Tooltip>}
               >
-                <i className='fa fa-level-up'/>
-              </Button>
-              <Button
-                bsStyle='primary'
-                onClick={
-                  () => {
-                    emit('changePage', { page: 'Recruit' });
-                  }
-                }
+                <Button
+                  bsStyle='primary'
+                  onClick={() => emit('changePage', { page: 'Recruit' })}
+                  disabled={this.props.inGame}
+                >
+                  <i className='fa fa-superpowers'/>
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                placement='bottom'
+                overlay={<Tooltip id='FriendsTooltip'>Friends List</Tooltip>}
               >
-                <i className='fa fa-superpowers'/>
-              </Button>
-              <Button
-                bsStyle='primary'
-                onClick={
-                  () => {
-                    emit('changePage', { page: 'Friends' });
-                  }
-                }
+                <Button
+                  bsStyle='primary'
+                  onClick={() => emit('changePage', { page: 'Friends' })}
+                  disabled={this.props.inGame}
+                >
+                  <i className='fa fa-address-book'/>
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                placement='bottom'
+                overlay={<Tooltip id='PurchaseCurrencyTooltip'>Purchase Currency</Tooltip>}
               >
-                <i className='fa fa-address-book'/>
-              </Button>
-              <Button
-                bsStyle='primary'
-                onClick={
-                  () => {
-                    emit('changePage', { page: 'Options' });
-                  }
-                }
+                <Button
+                  bsStyle='primary'
+                  onClick={() => emit('changePage', { page: 'MicroTransactions' })}
+                  disabled={this.props.inGame}
+                >
+                  <i className='fa fa-dollar'/>
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                placement='bottom'
+                overlay={<Tooltip id='OptionsTooltip'>Options</Tooltip>}
               >
-                <i className='fa fa-gears'/>
-              </Button>
+                <Button
+                  bsStyle='primary'
+                  onClick={() => emit('changePage', { page: 'Options' })}
+                  disabled={this.props.inGame}
+                >
+                  <i className='fa fa-gears'/>
+                </Button>
+              </OverlayTrigger>
               <Button
                 bsStyle='danger'
                 onClick={() => emit('logout')}
@@ -103,9 +126,11 @@ const mapStateToProps = (state, ownProps) => {
   return {
     level: state.session.level,
     experience: state.session.experience,
+    experienceToNextLevel: state.session.experienceToNextLevel,
     gold: state.session.gold,
     currentStamina: state.session.currentStamina,
     maxStamina: state.session.maxStamina,
+    inGame: state.main.inGame,
   }
 };
 

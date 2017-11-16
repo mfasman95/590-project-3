@@ -4,19 +4,21 @@ import Page404 from './NotFound';
 import Home from './Home';
 import Login from './Login';
 import ManageParty from './ManageParty';
-import Upgrades from './Upgrades';
 import Recruit from './Recruit';
 import Friends from './Friends';
 import Options from './Options';
+import MicroTransactions from './MicroTransactions';
+import Adventure from './Adventure';
 
 const Pages = Object.freeze({
   Home,
   Login,
   ManageParty,
-  Upgrades,
   Recruit,
   Friends,
   Options,
+  MicroTransactions,
+  Adventure,
 });
 
 export const NotFound = Page404;
