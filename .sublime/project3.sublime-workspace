@@ -1,0 +1,532 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ENTITY",
+				"ENTITY"
+			],
+			[
+				"gen",
+				"generateLightBrightnessTableHell"
+			],
+			[
+				"INVOK",
+				"INVOKEVIRTUAL"
+			],
+			[
+				"INVOKE",
+				"INVOKESTATIC"
+			],
+			[
+				"REND",
+				"RENDER_I_FLORB"
+			],
+			[
+				"ICON",
+				"ICONST_0"
+			],
+			[
+				"TC",
+				"TPROXY_CLIENT"
+			],
+			[
+				"NBT",
+				"NBT_TAG"
+			],
+			[
+				"PT",
+				"POTION_EFFECT"
+			],
+			[
+				"ENTITY_",
+				"ENTITY_LIVING_BASE"
+			],
+			[
+				"POTION",
+				"POTION_EFFECT"
+			],
+			[
+				"NEW",
+				"NEW_PACKET"
+			],
+			[
+				"i",
+				"i"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/Users/Ashwin/Documents/IGME-590/590-project-3/package.json",
+			"settings":
+			{
+				"buffer_size": 1351,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 335.0,
+		"last_filter": "hex",
+		"selected_items":
+		[
+			[
+				"hex",
+				"HexViewer: Toggle Hex View"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"format",
+				"ESLint Formatter: Format this file"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"re",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"color",
+				"Color Scheme Editor: Edit current color scheme"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"set theme",
+				"UI: Select Theme"
+			],
+			[
+				"theme",
+				"UI: Select Theme"
+			],
+			[
+				"remove ",
+				"Package Control: Remove Package"
+			],
+			[
+				"open reso",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"extract",
+				"PackageResourceViewer: Extract Package"
+			],
+			[
+				"",
+				"A File Icon: Changelog"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: dis",
+				"Package Control: Disable Package"
+			],
+			[
+				"package control install",
+				"Package Control: Install Package"
+			],
+			[
+				"scopea",
+				"Toggle ScopeAlways"
+			],
+			[
+				"Toggle Scope",
+				"Toggle ScopeAlways"
+			],
+			[
+				"Package Control: instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ena",
+				"Package Control: Enable Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Discover Packages"
+			],
+			[
+				"Package Control: re",
+				"Package Control: Remove Package"
+			],
+			[
+				"pac insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 492.0
+	},
+	"console":
+	{
+		"height": 488.0,
+		"history":
+		[
+			"Toggle ScopeAlways;",
+			"Toggle ScopeAlways true",
+			"Toggle ScopeAlways on",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"?",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"help Toggle",
+			"Toggle",
+			"ToggleScopeAlways",
+			"toggle_scope_always",
+			"Toggle 1 ScopeAlways",
+			"Toggle ScopeAlways 1",
+			"Toggle ScopeAlways",
+			"scope"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Ashwin/Documents/IGME-590/590-project-3",
+		"/C/Users/Ashwin/Documents/IGME-590/590-project-3/server",
+		"/C/Users/Ashwin/Documents/IGME-590/590-project-3/server/sockets"
+	],
+	"file_history":
+	[
+		"/C/Users/Ashwin/Documents/dumps/Gatcha_Build.sql",
+		"/C/Users/Ashwin/Documents/IGME-590/590-project-3/server/sockets/emit.js",
+		"/C/Users/Ashwin/Documents/IGME-590/590-project-3/server/app.js",
+		"/C/Users/Ashwin/Documents/IGME-590/590-project-3/reference/database_draft.xlsx",
+		"/C/Users/Ashwin/Downloads/ListLab1.java",
+		"/C/Users/Ashwin/Documents/Visual Studio 2015/Projects/ReEngineApp_2016s/A08s_CameraClass/MyCameraSingleton.cpp",
+		"/C/Users/Ashwin/Documents/IGME-309/Simplex_2016_Fall/A04 - Camera/MyCamera.cpp",
+		"/C/Users/Ashwin/Accel. Comp Sci/APCS/IRCBot/org/ashpro/irc/apcs/Commands.java",
+		"/C/Users/Ashwin/Dropbox/Planar Exodus/New/Current Tasks.txt",
+		"/C/Users/Ashwin/Tracing/Main.java",
+		"/C/Users/Ashwin/Accel. Comp Sci/APCS/IRCBot/slaps.dll",
+		"/C/Users/Ashwin/Tracing/quotes.txt",
+		"/C/Users/Ashwin/Accel. Comp Sci/APCS/IRCBot/quotes.dll",
+		"/C/Users/Ashwin/AppData/Local/Temp/7zO066B83AE/en_US.lang",
+		"/C/Users/Ashwin/Documents/Visual Studio 2015/Projects/Other/AshwinG_PE5/PE3Starter/PE3.cpp",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/asm/refs/PassiveMethodRefs.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/asm/procedures/MiscProcedures.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/asm/ASMUtils.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/asm/Reference.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/asm/PropertyRef.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/asm/refs/ActiveClassRefs.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/asm/refs/ActiveMethodRefs.java",
+		"/C/Users/Ashwin/Minecraft/ClassTransformer.class",
+		"/C/Users/Ashwin/Minecraft/MiscProcedures.class",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/run/client/logs/fml-client-2.log",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/run/server/logs/fml-server-3.log",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/run/server/logs/fml-server-latest.log",
+		"/C/Users/Ashwin/Minecraft/old/ashpc/Skalas/server.log",
+		"/C/Users/Ashwin/Games/Minecraft/fml-client-latest.log",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/PlexTweaks.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/Utils.java",
+		"/C/Users/Ashwin/Dropbox/timing.csv",
+		"/C/Users/Ashwin/Dropbox/Planar Exodus/New/Master Copy/config/PlexTweaks/registry.txt",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/asm/ClassTransformer.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/asm/MethodTransformer.java",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/minecraftTaskList.tmLanguage",
+		"/C/Users/Ashwin/Documents/IGME-601/Egypt-Metroid.txt",
+		"/C/Users/Ashwin/ashtheking_hiero",
+		"/C/Users/Ashwin/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/unpacked/conf/en_US.lang",
+		"/C/Users/Ashwin/AppData/Local/Temp/7zOC397FC51/en_US.lang",
+		"/C/Users/Ashwin/Dropbox/Planar Exodus/New/Plans for 1.7.txt",
+		"/C/Users/Ashwin/Minecraft/lighttest/Main.java",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/User/SublimeAStyleFormatter.sublime-settings",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/SublimeAStyleFormatter/SublimeAStyleFormatter.sublime-settings",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/run/client/logs/fml-client-latest.log",
+		"/C/Users/Ashwin/Downloads/fml-client-latest.log",
+		"/C/Users/Ashwin/Downloads/fml-client-latest (1).log",
+		"/C/Users/Ashwin/Downloads/crash-2017-10-10_11.47.48-client.txt",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/gui/CustomGui.java",
+		"/C/Users/Ashwin/Dropbox/Planar Exodus/New/PlexTweaks.asm",
+		"/C/Users/Ashwin/Downloads/crash-2017-10-10_16.55.29-client.txt",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/net/ashtheking/plex/gui/CustomGui.java",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/User/Color Highlighter/themes/1337 (SL).tmTheme",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/Theia/src/main/java/org/serakos/ceres/core/Ceres_Transform.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/Theia/src/main/java/org/serakos/krios/core/World_Transform.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/Theia/src/main/java/org/serakos/theia/ClientEventHandler.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/Theia/src/main/java/org/serakos/ceres/Ceres.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/Theia/src/main/java/org/serakos/ceres/core/CeresTransformer.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/Theia/src/main/java/org/serakos/theia/Theia.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/Theia/src/main/java/org/serakos/krios/space/WorldProviderSpace.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/Theia/src/main/java/org/serakos/krios/space/SpaceData.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/Theia/src/main/java/org/serakos/krios/Krios.java",
+		"/C/Users/Ashwin/Minecraft/fml-server-3.log",
+		"/C/Users/Ashwin/Downloads/crash-2017-10-09_03.29.22-server.txt",
+		"/C/Users/Ashwin/Downloads/2017-10-09-1.log",
+		"/C/Users/Ashwin/Accel. Comp Sci/APCS/NQueens/JavaSourceFiles/NQueens.java",
+		"/C/Users/Ashwin/Minecraft/lighttest/META-INF/manifest.mf",
+		"/C/Users/Ashwin/Minecraft/Main.java",
+		"/C/Users/Ashwin/AppData/Roaming/.technic/logs/techniclauncher_2017-09-17.log",
+		"/C/Users/Ashwin/workspace/Dyeus/src/org/serakos/dyeus/DyeusPanel.java",
+		"/C/Users/Ashwin/workspace/Dyeus/src/org/serakos/dyeus/DyeusLauncher.java",
+		"/C/Users/Ashwin/workspace/WorldGen/src/me/ashtheking/gen/MidpointGen.java",
+		"/C/Users/Ashwin/AppData/Roaming/.technic/logs/techniclauncher_2017-10-02.log",
+		"/C/Users/Ashwin/AppData/Roaming/.technic/logs/techniclauncher_2017-09-11.log",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/MiscTransformer.java",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/PlexTweaks/src/main/java/org/serakos/plex/core/PotionTransformer.java",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/User/custom.sublime-theme",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/Theme - Default/adaptive/Adaptive.sublime-theme",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/Theme - Default/Default.sublime-theme",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/custom.sublime-theme",
+		"/C/Program Files (x86)/Sublime Text 3/Packages/Theme - Default.sublime-package",
+		"/C/Program Files (x86)/Sublime Text 3/Packages/Default.sublime-package",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/User/SublimeLinter/1337 (SL).tmTheme",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/User/minecraftServerLog.sublime-settings",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/ScopeAlways/ScopeAlways.sublime-settings",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/minecraftASM.tmLanguage",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/minecraftServerLog.tmLanguage",
+		"/C/Users/Ashwin/AppData/Local/Temp/7zOC963355C/deobfuscation_data-1.7.10",
+		"/C/Users/Ashwin/Dropbox/Planar Exodus/Random/minecraftTaskList.tmLanguage",
+		"/C/Users/Ashwin/Dropbox/Planar Exodus/Random/minecraftServerLog.tmLanguage",
+		"/C/Users/Ashwin/AppData/Roaming/.technic/modpacks/planar-exodus-2/blocks.asm",
+		"/C/Users/Ashwin/AppData/Roaming/.technic/modpacks/planar-exodus-2/asm/ccl_modular/codechicken#nei#guihook#DefaultSlotClickHandler.txt",
+		"/C/Users/Ashwin/AppData/Roaming/.technic/modpacks/planar-exodus-2/asm/ccl_modular/agq.txt",
+		"/C/Users/Ashwin/AppData/Roaming/.technic/logs/techniclauncher_2017-09-07.log",
+		"/C/Users/Ashwin/AppData/Roaming/.technic/logs/techniclauncher_2017-09-12.log",
+		"/C/Users/Ashwin/Documents/IGME-590/streaming-media-assignment/package.json",
+		"/C/Users/Ashwin/Documents/IGME-330/project2/js/main.js",
+		"/C/Users/Ashwin/Documents/IGME-330/project2/js/graphics.js",
+		"/C/Users/Ashwin/Documents/IGME-330/project2/index.html",
+		"/C/Users/Ashwin/Dropbox/Planar Exodus/Random/Dev Environment Setup.txt",
+		"/C/Users/Ashwin/AppData/Local/Sublime Text 3/Cache/Java/Java.tmLanguage.cache",
+		"/C/Users/Ashwin/AppData/Roaming/.technic/logs/techniclauncher_2017-05-18.log",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/minecraftTaskList.tmLanguage.YAML-tmLanguage",
+		"/C/Users/Ashwin/Dropbox/Planar Exodus/New/potions.txt",
+		"/C/Users/Ashwin/Dropbox/Planar Exodus/New/Master Copy/config/PlexTweaks/splashes.txt",
+		"/C/Users/Ashwin/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/unpacked/conf/packaged.srg",
+		"/C/Users/Ashwin/workspace/Victus/src/main/resources/testchar.data",
+		"/C/Users/Ashwin/Games/Emulator/PSP/README.md",
+		"/C/Users/Ashwin/workspace/Vivian/src/main/resources/awot.txt",
+		"/C/Users/Ashwin/workspace/Vivian/log/Vivian-3.log",
+		"/C/Users/Ashwin/workspace/Vivian/log/Vivian-0.log",
+		"/C/Users/Ashwin/workspace/Nimue/log/Nimue-0.log.2",
+		"/C/Users/Ashwin/Desktop/test.bmp.hex",
+		"/C/Users/Ashwin/Desktop/test.bmp",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/HexViewer/hex_viewer.sublime-settings",
+		"/C/Users/Ashwin/AppData/Roaming/Sublime Text 3/Packages/HexViewer/Default (Windows).sublime-keymap",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/Theia/.indexes/properties.index",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/Synthesis/.markers",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/PlexTweaks/.markers",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.buildship.ui.prefs",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.jdt.core.external.folders/.location",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/PlexTweaks/.indexes/properties.index",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/PlexTweaks/.location",
+		"/C/Users/Ashwin/Games/Minecraft/workspace/.metadata/.plugins/org.eclipse.buildship.ui/dialog_settings.xml"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": false,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/Ashwin/Documents/IGME-590/590-project-3/package.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1351,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								617,
+								617
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/zzz A File Icon zzz/aliases/JSON (NPM).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "project3.sublime-project",
+	"replace":
+	{
+		"height": 72.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\Users\\Ashwin\\Documents\\IGME-590\\project2\\.sublime\\webcraft2.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 223.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

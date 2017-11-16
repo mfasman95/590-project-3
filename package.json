@@ -4,7 +4,10 @@
   "description": "Gatcha and Dragons",
   "main": "./server/app.js",
   "repository": "https://github.com/mfasman95/590-project-3.git",
-  "author": "Matthew Fasman <mfasman95@gmail.com>",
+  "authors": [
+    "Matthew Fasman <mfasman95@gmail.com>",
+    "Ashwin Ganapathiraju <ashwin.v.ganapathiraju@gmail.com>"
+  ],
   "license": "MIT",
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server/app.js",
