@@ -10,22 +10,20 @@ import { emit } from './../scripts/socket';
  * @param props.disabled - Disabled state of the button (true/false)
  * @param props.iconString - The font awesome icon string for this button 
  */
-const OverlayNavButton = (props) => {
-  return (
-    <OverlayTrigger
-      placement='bottom'
-      overlay={<Tooltip id={`${props.tooltipId}Tooltip`}>{props.tooltipText}</Tooltip>}
+const OverlayNavButton = (props) => (
+  <OverlayTrigger
+    placement='bottom'
+    overlay={<Tooltip id={`${props.tooltipId}Tooltip`}>{props.tooltipText}</Tooltip>}
+  >
+    <Button
+      bsStyle='primary'
+      onClick={() => emit('changePage', { page: props.pageTarget })}
+      disabled={props.disabled}
     >
-      <Button
-        bsStyle='primary'
-        onClick={() => emit('changePage', { page: props.pageTarget })}
-        disabled={props.disabled}
-      >
-        <i className={`fa ${props.iconString}`}/>
-      </Button>
-    </OverlayTrigger>
-  )
-}
+      <i className={`fa ${props.iconString}`}/>
+    </Button>
+  </OverlayTrigger>
+);
 
 class MainNav extends React.Component {
   render() {

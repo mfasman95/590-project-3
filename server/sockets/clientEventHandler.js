@@ -49,12 +49,7 @@ const changePage = (page, socket) => {
 module.exports = Object.freeze({
   clientEmitHandler: (sock, eventData) => {
     const socket = sock;
-    const { event, data, csrf } = eventData;
-
-    // Check custom csrf operation
-    if (socket.csrf !== csrf) {
-      return log(chalk.bold.red('INVALID CSRF TOKEN'));
-    }
+    const { event, data } = eventData;
 
     switch (event) {
       case 'changePage': {

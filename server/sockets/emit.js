@@ -1,15 +1,6 @@
 const users = require('./users');
 const xxh = require('xxhashjs');
 
-const generateCSRF = (sock) => {
-  const socket = sock;
-
-  const hash = xxh.h32(`${socket.id}${new Date().getTime()}`, 0xCAFEBABE).toString(16);
-  socket.csrf = hash;
-
-  return hash;
-};
-
 // Build functions to emit to a single client
 const emit = type => (socket, message) => {
   const { event, data, timestamp } = message;
@@ -19,7 +10,6 @@ const emit = type => (socket, message) => {
     event,
     data,
     timestamp,
-    csrf: generateCSRF(socket),
   });
 };
 const genericEmit = emit('generic');
