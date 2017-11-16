@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+# Any editor config folders
+.vscode/
+.sublime/
