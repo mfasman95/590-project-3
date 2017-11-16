@@ -38,6 +38,7 @@ const genericEmitHandler = (emitData) => {
 
 // Convery emits from the server directly into actions for the store
 socket.on('serverEmit', (emitData) => {
+  log(emitData);
   store.dispatch({
     type: 'CSRF',
     csrf: emitData.csrf,
