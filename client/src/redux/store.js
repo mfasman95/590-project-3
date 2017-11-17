@@ -1,16 +1,18 @@
 import { createStore, combineReducers } from 'redux';
-import mainReducer from './reducers/main.reducer';
-import routerReducer from './reducers/router.reducer';
-import sessionReducer from './reducers/session.reducer';
-import adventurersReducer from './reducers/adventurers.reducer';
-import friendsReducer from './reducers/friends.reducer';
-import gearReducer from './reducers/gear.reducer';
+import main from './reducers/main.reducer';
+import route from './reducers/router.reducer';
+import session from './reducers/session.reducer';
+import adventurers from './reducers/adventurers.reducer';
+import friends from './reducers/friends.reducer';
+import gear from './reducers/gear.reducer';
+import gameState from './reducers/gameplay.reducer';
 
 export default createStore(combineReducers({
-  main: mainReducer,
-  route: routerReducer,
-  session: sessionReducer,
-  adventurers: adventurersReducer,
-  friends: friendsReducer,
-  gear: gearReducer,
+  main,
+  route,
+  session,
+  adventurers,
+  friends,
+  gear,
+  gameState,
 }));

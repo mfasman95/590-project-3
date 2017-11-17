@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-class Recruit extends React.Component {
+export default class Recruit extends React.Component {
   render() {
     return (
       <div>
@@ -13,5 +13,3 @@ class Recruit extends React.Component {
     );
   }
 }
-
-export default Recruit;

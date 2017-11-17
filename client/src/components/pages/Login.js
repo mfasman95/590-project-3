@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { emit } from './../../scripts/socket';
 
-class Login extends React.Component {
+export default class Login extends React.Component {
   constructor(props) {
     super();
     
@@ -34,5 +34,3 @@ class Login extends React.Component {
     );
   }
 }
-
-export default Login;

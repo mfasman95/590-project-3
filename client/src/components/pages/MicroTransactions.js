@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-class MicroTransactions extends React.Component {
+export default class MicroTransactions extends React.Component {
   render() {
     return (
       <div>
@@ -12,5 +12,3 @@ class MicroTransactions extends React.Component {
     );
   }
 }
-
-export default MicroTransactions;

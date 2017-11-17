@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button, Row, Col, Well } from 'react-bootstrap';
 import { emit } from '../../scripts/socket';
 
@@ -7,6 +8,7 @@ class Adventure extends React.Component {
     return (
       <div>
         <h1>Gameplay Screen</h1>
+        <p>{JSON.stringify(this.props.gameState)}</p>
         <h1>EXCITING GAMEPLAY</h1>
         <Row>
         <Col xs={6}>
@@ -44,4 +46,7 @@ class Adventure extends React.Component {
   }
 }
 
-export default Adventure;
+//Function to map the redux state to object properties
+const mapStateToProps = (state, ownProps) => ({ gameState: state.gameState });
+
+export default connect(mapStateToProps)(Adventure);
