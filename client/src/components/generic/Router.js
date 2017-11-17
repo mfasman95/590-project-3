@@ -2,10 +2,11 @@ import React from 'react';
 import { Col } from 'react-bootstrap';
 
 export default class Router extends React.Component {
-  render() {
-    // Determine the page to render
-    const Page = this.props.pages[this.props.currentPage];
-    const NotFoundPage = (this.props.custom404) ?
+  constructor(props) {
+    super(props);
+
+    // Determine the 404 page for this component
+    this.NotFoundPage = (this.props.custom404) ?
       // If a custom 404 page is passed to the router, use it
       this.props.custom404 :
       // Otherwise, use the generic 404 page
@@ -17,9 +18,12 @@ export default class Router extends React.Component {
           </Col>
         </div>
       );
+  }
+  render() {
+    const Page = this.props.pages[this.props.currentPage];
 
-    // If the page does not exist, present the 404 pages
-    if (!Page) return <NotFoundPage pageWanted={this.props.currentPage}/>;
-    else return <Page/>;
+    // Render the current page in pages
+    // Fallback to the 404 page if the current page is not in pages
+    return Page ? <Page/> : this.NotFoundPage({ pageWanted: this.props.currentPage });
   }
 }
