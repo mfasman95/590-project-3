@@ -1,11 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Col } from 'react-bootstrap';
 
-class Router extends React.Component {
+export default class Router extends React.Component {
   render() {
     // Determine the page to render
-    const Page = this.props.pages[this.props.page];
+    const Page = this.props.pages[this.props.currentPage];
     const NotFoundPage = (this.props.custom404) ?
       // If a custom 404 page is passed to the router, use it
       this.props.custom404 :
@@ -20,16 +19,7 @@ class Router extends React.Component {
       );
 
     // If the page does not exist, present the 404 pages
-    if (!Page) return <NotFoundPage pageWanted={this.props.page}/>;
+    if (!Page) return <NotFoundPage pageWanted={this.props.currentPage}/>;
     else return <Page/>;
   }
 }
-
-//Function to map the redux state to object properties
-const mapStateToProps = (state, ownProps) => {
-  return {
-    page: state.route.page
-  }
-};
-
-export default connect(mapStateToProps)(Router);

@@ -15,7 +15,7 @@ class App extends Component {
             <MainNav />
         }
         <Col xs={10} xsOffset={1}>
-          <Router pages={Pages} />
+          <Router currentPage={this.props.page} pages={Pages} />
         </Col>
       </div>
     );
@@ -25,6 +25,7 @@ class App extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     loggedIn: state.main.loggedIn,
+    page: state.route.page,
   }
 }
 
