@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Col } from 'react-bootstrap';
 import './css/App.css';
 import Router from './components/generic/Router';
-import Pages, { NotFound } from './components/pages';
+import Pages from './components/pages';
 import MainNav from './components/Navbar';
 
 class App extends Component {
@@ -15,7 +15,7 @@ class App extends Component {
             <MainNav />
         }
         <Col xs={10} xsOffset={1}>
-          <Router pages={Pages} notFound={NotFound}/>
+          <Router pages={Pages} />
         </Col>
       </div>
     );
