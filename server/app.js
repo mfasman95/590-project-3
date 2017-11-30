@@ -1,11 +1,15 @@
 const http = require('http');
 const path = require('path');
 
+const dotenv = require('dotenv');
 const express = require('express');
 const socketio = require('socket.io');
 const chalk = require('chalk');
 
 const sockets = require('./sockets');
+
+// Load env variables
+dotenv.load();
 
 const { log } = console;
 const PORT = process.env.PORT || process.env.NODE_PORT || 3000;
