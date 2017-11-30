@@ -26,6 +26,7 @@ const actionHandlers = {
     const rs = returnState;
 
     rs.loggedIn = false;
+    rs.inGame = false;
     return rs;
   },
   ADVENTURE_START: (returnState) => {

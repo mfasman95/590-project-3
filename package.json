@@ -17,11 +17,12 @@
     "client:build": "node ./scripts/client-build.js",
     "pretest": "eslint ./src --fix",
     "test": "echo \"Tests complete\"",
-    "postinstall": "echo \"Done Installing...\""
+    "postinstall": "node ./scripts/setup-env.js"
   },
   "dependencies": {
     "chalk": "^2.3.0",
     "cross-env": "^5.1.1",
+    "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "lodash": "^4.17.4",
     "socket.io": "^2.0.4",
