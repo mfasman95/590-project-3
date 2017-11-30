@@ -8,8 +8,10 @@ const chalk = require('chalk');
 
 const sockets = require('./sockets');
 
-// Load env variables
-dotenv.load();
+// Load env variable if it doesn't exist
+if (!process.env.JAWSDB_URL) {
+  dotenv.load();
+}
 
 const { log } = console;
 const PORT = process.env.PORT || process.env.NODE_PORT || 3000;

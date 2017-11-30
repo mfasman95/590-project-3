@@ -1,4 +1,1 @@
-SQL_HOST=realHost
-SQL_USER=realUser
-SQL_PASS=realPassword
-SQL_DATA=realDatabase
+JAWSDB_URL=mysql://user:password@host:port/database
