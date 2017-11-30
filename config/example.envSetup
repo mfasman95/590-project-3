@@ -1,4 +1,4 @@
-HOST=realHost
-USER=realUser
-PASS=realPassword
-DATA=realDatabase
+SQL_HOST=realHost
+SQL_USER=realUser
+SQL_PASS=realPassword
+SQL_DATA=realDatabase

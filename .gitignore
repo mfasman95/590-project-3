@@ -60,3 +60,7 @@ typings/
 # Any editor config folders
 .vscode/
 .sublime/
+server/config/
+
+# npm lock file
+package-lock.json
