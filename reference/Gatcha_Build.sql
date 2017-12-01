@@ -1,17 +1,13 @@
-CREATE DATABASE  IF NOT EXISTS `dragon_gatcha` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `dragon_gatcha`;
--- MySQL dump
+-- MySQL dump <>
 --
--- Host: localhost    Database: dragon_gatcha
+-- Host: <>    Database: <>
 -- ------------------------------------------------------
--- Server version
+-- Server version	<>
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
@@ -25,7 +21,7 @@ DROP TABLE IF EXISTS `adventurer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `adventurer` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL,
   `level` int(10) unsigned NOT NULL,
   `name` varchar(45) NOT NULL,
   `race` int(10) unsigned NOT NULL,
@@ -42,7 +38,7 @@ CREATE TABLE `adventurer` (
   KEY `race_idx` (`race`),
   CONSTRAINT `class` FOREIGN KEY (`class`) REFERENCES `class` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `race` FOREIGN KEY (`race`) REFERENCES `race` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='List of Adventurers, not constrained by User ID.';
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,9 +46,7 @@ CREATE TABLE `adventurer` (
 --
 
 LOCK TABLES `adventurer` WRITE;
-/*!40000 ALTER TABLE `adventurer` DISABLE KEYS */;
 INSERT INTO `adventurer` VALUES (1,1,'Test Testerson',1,1,12,11,10,10,11,11),(2,5,'John Smith',2,2,12,13,12,11,10,12),(3,10,'Tset Tosretset',3,3,11,12,13,13,12,13),(4,15,'Bob Roberto',4,5,12,13,1,15,13,12),(5,20,'Blargh Blorgh',5,4,12,13,15,15,12,18);
-/*!40000 ALTER TABLE `adventurer` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -87,7 +81,7 @@ DROP TABLE IF EXISTS `class`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `class` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(45) NOT NULL,
   `hp_base` int(10) unsigned NOT NULL,
   `hp_level` int(10) unsigned NOT NULL,
@@ -95,7 +89,7 @@ CREATE TABLE `class` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,9 +97,7 @@ CREATE TABLE `class` (
 --
 
 LOCK TABLES `class` WRITE;
-/*!40000 ALTER TABLE `class` DISABLE KEYS */;
 INSERT INTO `class` VALUES (1,'Fighter',10,6,'str'),(2,'Rogue',8,5,'dex'),(3,'Wizard',6,4,'int'),(4,'Sorcerer',6,4,'cha'),(5,'Cleric',8,5,'wis'),(6,'Druid',8,5,'wis');
-/*!40000 ALTER TABLE `class` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -116,12 +108,12 @@ DROP TABLE IF EXISTS `equipment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `equipment` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `armor` int(10) unsigned NOT NULL DEFAULT '0',
+  `id` int(10) unsigned NOT NULL,
+  `is_armor` int(1) unsigned NOT NULL DEFAULT '0',
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of Equipment. Currently a shell.';
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,8 +121,34 @@ CREATE TABLE `equipment` (
 --
 
 LOCK TABLES `equipment` WRITE;
-/*!40000 ALTER TABLE `equipment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `equipment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `friend_list`
+--
+
+DROP TABLE IF EXISTS `friend_list`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `friend_list` (
+  `id` int(10) unsigned NOT NULL,
+  `user` int(10) unsigned NOT NULL,
+  `friend` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `friend_base_idx` (`user`),
+  KEY `friend_ref_idx` (`friend`),
+  CONSTRAINT `friend_base` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `friend_ref` FOREIGN KEY (`friend`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `friend_list`
+--
+
+LOCK TABLES `friend_list` WRITE;
+INSERT INTO `friend_list` VALUES (2,1,1);
 UNLOCK TABLES;
 
 --
@@ -145,7 +163,7 @@ CREATE TABLE `proficiency` (
   `bonus` int(11) GENERATED ALWAYS AS ((ceiling((`level` / 4)) + 1)) STORED,
   PRIMARY KEY (`level`),
   UNIQUE KEY `level_UNIQUE` (`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Proficiency Bonus per Level. Calculated and stored simply for slight optimization.';
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,9 +171,7 @@ CREATE TABLE `proficiency` (
 --
 
 LOCK TABLES `proficiency` WRITE;
-/*!40000 ALTER TABLE `proficiency` DISABLE KEYS */;
 INSERT INTO `proficiency` (`level`) VALUES (1),(2),(3),(4),(5),(6),(7),(8),(9),(10),(11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
-/*!40000 ALTER TABLE `proficiency` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -166,13 +182,13 @@ DROP TABLE IF EXISTS `race`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `race` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(45) NOT NULL,
   `imagePath` varchar(45) DEFAULT NULL COMMENT 'Custom image path for the race that isn''t "name.png"',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='List of Adventurer Races. Completely Visual ATM.';
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,9 +196,7 @@ CREATE TABLE `race` (
 --
 
 LOCK TABLES `race` WRITE;
-/*!40000 ALTER TABLE `race` DISABLE KEYS */;
 INSERT INTO `race` VALUES (1,'Human',NULL),(2,'Halfing',NULL),(3,'Tiefling',NULL),(4,'Half Elf',NULL),(5,'Elf',NULL),(6,'Dwarf',NULL),(7,'Dragonborn',NULL);
-/*!40000 ALTER TABLE `race` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -197,7 +211,7 @@ CREATE TABLE `score` (
   `modifier` int(11) GENERATED ALWAYS AS ((ceiling(((`score` - 1) / 2)) - 5)) STORED,
   PRIMARY KEY (`score`),
   UNIQUE KEY `score_UNIQUE` (`score`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,9 +219,7 @@ CREATE TABLE `score` (
 --
 
 LOCK TABLES `score` WRITE;
-/*!40000 ALTER TABLE `score` DISABLE KEYS */;
 INSERT INTO `score` (`score`) VALUES (1),(2),(3),(4),(5),(6),(7),(8),(9),(10),(11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
-/*!40000 ALTER TABLE `score` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -218,13 +230,14 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
+  `currency` int(10) unsigned NOT NULL DEFAULT '100',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,8 +245,7 @@ CREATE TABLE `user` (
 --
 
 LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+INSERT INTO `user` VALUES (1,'admin','thebestpassword',47);
 UNLOCK TABLES;
 
 --
@@ -244,15 +256,15 @@ DROP TABLE IF EXISTS `user_cards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_cards` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL,
   `user` int(10) unsigned NOT NULL,
   `card_type` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '0 = ''Adventurer'', 1 = ''Equipment''',
   `card_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `user_idx` (`user`),
-  CONSTRAINT `user` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of cards a user owns. Just a bridge table for now.';
+  CONSTRAINT `user` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,8 +272,7 @@ CREATE TABLE `user_cards` (
 --
 
 LOCK TABLES `user_cards` WRITE;
-/*!40000 ALTER TABLE `user_cards` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_cards` ENABLE KEYS */;
+INSERT INTO `user_cards` VALUES (1,1,0,3),(2,1,0,2),(3,1,0,5),(4,1,1,1),(5,1,1,4);
 UNLOCK TABLES;
 
 --
@@ -364,7 +375,6 @@ DELIMITER ;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
