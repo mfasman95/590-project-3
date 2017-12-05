@@ -25,6 +25,30 @@ const actionHandlers = {
     rs.currentStamina = action.stamina;
     return rs;
   },
+  UPDATE_LEVEL: (returnState, action) => {
+    const rs = returnState;
+
+    rs.level = action.lvl;
+    return rs;
+  },
+  UPDATE_EXPERIENCE: (returnState, action) => {
+    const rs = returnState;
+
+    rs.experience = action.xp;
+    return rs;
+  },
+  UPDATE_GOLD: (returnState, action) => {
+    const rs = returnState;
+
+    rs.gold = action.currency;
+    return rs;
+  },
+  UPDATE_CURRENT_STAMINA: (returnState, action) => {
+    const rs = returnState;
+
+    rs.currentStamina = action.stamina;
+    return rs;
+  },
 };
 
 // Export the reducer

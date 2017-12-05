@@ -1,7 +1,7 @@
 import React from 'react';
 import GearPanel from './../custom/GearPanel';
 import AdventurerPanel from './../custom/AdventurerPanel';
-import { Well, Row, Col } from 'react-bootstrap';
+import { Well, Row, Col, PageHeader } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 class ManageParty extends React.Component {
@@ -10,7 +10,7 @@ class ManageParty extends React.Component {
     const adventurerKeys = Object.keys(this.props.adventurers);
     return (
       <div>
-        <h1>Manage Party Page</h1>
+        <PageHeader>Manage Party Page</PageHeader>
         <Row>
           <Col xs={6}>
             <h3>Adventurers</h3>

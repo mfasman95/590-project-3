@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Row, Col, Well } from 'react-bootstrap';
+import { Button, Row, Col, Well, PageHeader } from 'react-bootstrap';
 import { emit } from '../../scripts/socket';
 
 class Adventure extends React.Component {
   render() {
     return (
       <div>
-        <h1>Gameplay Screen</h1>
+        <PageHeader>Gameplay Screen</PageHeader>
         <p>{JSON.stringify(this.props.gameState)}</p>
         <h1>EXCITING GAMEPLAY</h1>
         <Row>

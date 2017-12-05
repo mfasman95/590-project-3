@@ -41,6 +41,12 @@ const actionHandlers = {
     rs.inGame = false;
     return rs;
   },
+  ERROR_SNACK: (returnState, action) => {
+    const rs = returnState;
+
+    console.log(action);
+    return rs;
+  },
 };
 
 // Export the reducer
