@@ -7,6 +7,7 @@ import Friends from './Friends';
 import Options from './Options';
 import MicroTransactions from './MicroTransactions';
 import Adventure from './Adventure';
+import SignUp from './SignUp';
 
 export default Object.freeze({
   Home,
@@ -17,4 +18,5 @@ export default Object.freeze({
   Options,
   MicroTransactions,
   Adventure,
+  SignUp,
 });

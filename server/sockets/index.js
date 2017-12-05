@@ -5,7 +5,7 @@ const _ = require('lodash');
 const { reduxEmit, genericEmit } = require('./emit');
 const { clientEmitHandler } = require('./clientEventHandler');
 const { Room, User, Message } = require('./../classes');
-const { users } = require('./users');
+const { addUser, getUser, deleteUser } = require('./users');
 // #endregion Requires
 
 // Create a reference to io, to be assigned when initSockets is called
@@ -27,13 +27,13 @@ const handleConnect = (sock) => {
   socket.hash = hash;
 
   // Store the user in the collection of all users
-  users[hash] = new User(socket);
+  const newUser = addUser(socket);
 
   // Add this user to the default room
-  startingRoom.addUser(users[hash]);
+  startingRoom.addUser(newUser);
 
   // Emit that the user joined to the client
-  genericEmit(socket, new Message('joined', {}));
+  genericEmit(new Message('joined', {}))(socket);
 
   // Make sure the initial room data being sent is valid for going over socket.io
   const roomsData = {};
@@ -44,23 +44,23 @@ const handleConnect = (sock) => {
   }
 
   // Send any necessary info for initiating the connection
-  reduxEmit(socket, new Message('INIT', {
+  reduxEmit(new Message('INIT', {
     id: hash,
-  }));
+  }))(socket);
 };
 
 const handleDisconnect = (sock) => {
   const socket = sock;
 
   // Get the relevant user and room using information on the socket
-  const user = users[socket.hash];
+  const user = getUser(socket.hash);
   const room = rooms[user.inRoom] || startingRoom;
 
   // Remove the user from the room they were in
   room.removeUser(user);
 
   // Delete this user from the collection of users
-  delete users[socket.hash];
+  deleteUser(socket.hash);
 };
 // #endregion Socket Handlers
 

@@ -1,8 +1,9 @@
-const users = require('./users');
+const { Message } = require('../classes');
+const { getUser } = require('./users');
 const xxh = require('xxhashjs');
 
 // Build functions to emit to a single client
-const emit = type => (socket, message) => {
+const emit = type => message => (socket) => {
   const { event, data, timestamp } = message;
 
   socket.emit('serverEmit', {
@@ -15,11 +16,13 @@ const emit = type => (socket, message) => {
 const genericEmit = emit('generic');
 const reduxEmit = emit('redux');
 
+const reduxErrorEmit = data => reduxEmit(new Message('ERROR_SNACK', data));
+
 // Build functions to emit to a full room
 const emitToRoom = emitFunc => room => (message) => {
   for (let i = 0; i < room.currentOccupancy; i++) {
-    const user = users[room.occupants[i].id];
-    if (user) emitFunc(user.socket, message);
+    const user = getUser(room.occupants[i].id);
+    if (user) emitFunc(message)(user.socket);
   }
 };
 const genericEmitToRoom = emitToRoom(genericEmit);
@@ -30,4 +33,5 @@ module.exports = Object.freeze({
   reduxEmit,
   genericEmitToRoom,
   reduxEmitToRoom,
+  reduxErrorEmit,
 });

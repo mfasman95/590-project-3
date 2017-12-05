@@ -8,10 +8,14 @@ const chalk = require('chalk');
 
 const sockets = require('./sockets');
 
-// Load env variable if it doesn't exist
-if (!process.env.JAWSDB_URL) {
-  dotenv.load();
-}
+// Dereference .env variables that might be overriden
+const { JAWSDB_URL } = process.env;
+
+// Load .env file, overwriting any .env variables in file
+dotenv.load();
+
+// Restore any .env variabes that were already loaded
+if (JAWSDB_URL !== undefined) process.env.JAWSDB_URL = JAWSDB_URL;
 
 const { log } = console;
 const PORT = process.env.PORT || process.env.NODE_PORT || 3000;

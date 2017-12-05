@@ -2,7 +2,6 @@ import extend from 'extend';
 
 // Set initial application state
 const initialState = {
-  userid: 1,
   level: 0,
   experience: 0,
   experienceToNextLevel: 0,
