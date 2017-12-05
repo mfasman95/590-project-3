@@ -89,7 +89,24 @@ const changePage = (page, socket) => {
       break;
     }
     case 'Adventure': {
-      // TODO: Send set of data needed for game play
+      const user = getUser(socket.hash);
+
+      db.startEncounter([user.userRowId])
+        .then((res) => {
+          const { enemies } = res;
+
+          const encounter = user.startEncounter(enemies);
+
+          return reduxEmit(new Message('UPDATE_GAME_STATE', {
+            gameState: {
+              enemies,
+              party: {/* This needs to be retrieved from the DB, should be 3 adventurers */},
+              ally: 'Select the ally that this user has designated from their friends list',
+              encounterId: encounter.id,
+            },
+          }));
+        })
+        .catch(err => reduxErrorEmit(err)(socket));
       break;
     }
     default: { log(chalk.bold.yellow(`ERROR: Page ${page} cannot be navigated to`)); }
