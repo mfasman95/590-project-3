@@ -2,6 +2,7 @@ import extend from 'extend';
 
 // Set initial application state
 const initialState = {
+  userid: 1,
   level: 0,
   experience: 0,
   experienceToNextLevel: 0,
@@ -14,6 +15,17 @@ const initialState = {
 const actionHandlers = {
   // Resets the session to the initial state
   CLEAR_SESSION: () => initialState,
+
+  // Temporary stat updating?
+  UPDATE_STATS: (returnState, action) => {
+    const rs = returnState;
+
+    rs.level = action.lvl;
+    rs.experience = action.xp;
+    rs.gold = action.currency;
+    rs.currentStamina = action.stamina;
+    return rs;
+  },
 };
 
 // Export the reducer

@@ -1,14 +1,7 @@
 import extend from 'extend';
 
 // Set initial application state
-const initialState = {
-  0: {
-    name: 'Jim\'s Sword',
-  },
-  1: {
-    name: 'Jen\'s Sword',
-  },
-};
+const initialState = {};
 
 // Handle actions dispatched to the reducer
 const actionHandlers = {

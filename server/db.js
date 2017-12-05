@@ -22,14 +22,8 @@ const query = (queryString, func) => async (params) => {
       .then(async (val) => {
         // Transform the value, async if needed
         const transformed = await func(val);
-        // If there's an error field
-        if(transformed.error) {
-          // Fail with the error.
-          reject(transformed.error);
-        } else { // Otherwise...
-          // Return the transformed value
-          resolve(transformed);
-        }
+        // Return the transformed value
+        resolve(transformed);
       }) // If it fails
       .catch((reason) => {
         // Return the rejection message.
@@ -53,8 +47,6 @@ const firstRow = async (val) => {
   const returnObj = {};
   // If there is no value
   if (!data) {
-    // Mark the data as errored.
-    returnObj.error = 'No rows returned!';
     // Return the object now.
     return returnObj;
   }
@@ -98,16 +90,19 @@ const convertList = (baseId, convertFunc) => async (val) => {
 
 // String constants for the queries. Helps keep things clean.
 const DBConstants = Object.freeze({
-  LOGIN: 'SELECT `id`, FROM `user` WHERE `username` = ? AND `password` = ?;',
+  LOGIN: 'SELECT `id` FROM `user` WHERE `username` = ? AND `password` = ?;',
   CREATE_USER: 'INSERT INTO `user` (`username`, `password`) VALUES (?, ?);',
   GET_USER: 'SELECT `id`, `username` AS name FROM `user` WHERE `id` = ?;',
+  GET_USER_DATA: 'SELECT `id`, `currency`, `level` AS lvl, `experience` AS xp, `stamina` FROM `user` WHERE `id` = ?;',
+  SET_CURRENCY: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
+  SET_LEVEL: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
+  SET_EXPERIENCE: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
+  SET_STAMINA: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
 
   GET_PARTY: 'SELECT `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ?;',
   GET_EQUIP: 'SELECT `card_id` AS equip_id FROM `user_cards` WHERE `card_type` = 1 AND `user` = ?;',
   GET_FRIENDS: 'SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ?;',
   ADD_FRIEND: 'INSERT INTO `friend_list` (`user`, `friend`) VALUES (?, ?);',
-  GET_CURRENCY: 'SELECT `currency` FROM `user` WHERE `id` = ?;',
-  SET_CURRENCY: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
   RECRUIT_CHARACTER: 'INSERT INTO `user_cards` (`user`, `card_type`, `card_id`) VALUES (?, 0, ?);',
   RECRUIT_EQUIPMENT: 'INSERT INTO `user_cards` (`user`, `card_type`, `card_id`) VALUES (?, 1, ?);',
 
@@ -146,6 +141,16 @@ module.exports.loginId = query(DBConstants.LOGIN, firstRow);
 module.exports.createUser = query(DBConstants.CREATE_USER, emptyObject);
 // [user_id] -> [user_id, username] -> {id, name}
 module.exports.getUser = query(DBConstants.GET_USER, firstRow);
+// [user_id] -> [user_id, currency, level, experience, stamina] -> {id, currency, lvl, xp, stamina}
+module.exports.getUserData = query(DBConstants.GET_USER_DATA, firstRow);
+// [user_id, newVal] -> [] -> {}
+module.exports.setCurrency = query(DBConstants.SET_CURRENCY, emptyObject);
+// [user_id, newVal] -> [] -> {}
+module.exports.setLevel = query(DBConstants.SET_LEVEL, emptyObject);
+// [user_id, newVal] -> [] -> {}
+module.exports.setExperience = query(DBConstants.SET_EXPERIENCE, emptyObject);
+// [user_id, newVal] -> [] -> {}
+module.exports.setStamina = query(DBConstants.SET_STAMINA, emptyObject);
 
 /* User data */
 
@@ -157,10 +162,6 @@ module.exports.equipList = query(DBConstants.GET_EQUIP, convertList('equip_id', 
 module.exports.friendList = query(DBConstants.GET_FRIENDS, convertList('user_id', module.exports.getUser));
 // [user_id, user_id] -> [] -> {}
 module.exports.addFriend = query(DBConstants.ADD_FRIEND, emptyObject);
-// [user_id] -> [currency] -> {currency}
-module.exports.getCurrency = query(DBConstants.GET_CURRENCY, firstRow);
-// [user_id, newVal] -> [] -> {}
-module.exports.setCurrency = query(DBConstants.SET_CURRENCY, emptyObject);
 // [user_id, entity_id] -> [] -> {}
 module.exports.recruitChar = query(DBConstants.RECRUIT_CHARACTER, emptyObject);
 // [user_id, equip_id] -> [] -> {}

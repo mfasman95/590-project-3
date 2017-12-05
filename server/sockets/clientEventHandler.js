@@ -1,9 +1,33 @@
 const chalk = require('chalk');
 const { reduxEmit } = require('./emit');
 const { Message } = require('./../classes');
+const db = require('../db.js');
 
 // #region Misc vars
 const { log } = console;
+
+// THIS IS HIGHLY TEMPORARY!!
+// Please remove once we've got login completed
+const userId = 1;
+
+// Do error handling or something, lol
+const errorHandling = e => log(chalk.red(e));
+
+// Helper methods
+const sendHelper = (method, params, func) => method(params).then(func).catch(errorHandling);
+const sendList = (socket, string, key, method, params) => sendHelper(method, params, (val) => {
+  const keys = Object.keys(val);
+  for (let i = 0; i < keys.length; i++) {
+    const obj = {};
+    obj[key] = val[keys[i]];
+    if (obj[key]) {
+      reduxEmit(socket, new Message(string, obj));
+    }
+  }
+});
+const sendObj = (socket, string, method, params) => sendHelper(method, params, (val) => {
+  reduxEmit(socket, new Message(string, val));
+});
 
 const changePage = (page, socket) => {
   switch (page) {
@@ -13,15 +37,17 @@ const changePage = (page, socket) => {
       break;
     }
     case 'Friends': {
-      // TODO: Send the user's updated friend list
+      sendList(socket, 'UPDATE_FRIEND', 'friend', db.friendList, [userId]);
       break;
     }
     case 'Home': {
-      // TODO: Update banner messages from database
+      // Dunno where to put this, lol
+      sendObj(socket, 'UPDATE_STATS', db.getUserData, [userId]);
       break;
     }
     case 'ManageParty': {
-      // TODO: Send updated list of party members
+      sendList(socket, 'UPDATE_ADVENTURER', 'adventurer', db.partyList, [userId]);
+      sendList(socket, 'UPDATE_GEAR', 'gear', db.equipList, [userId]);
       break;
     }
     case 'Options': {
