@@ -209,11 +209,12 @@ module.exports.clientEmitHandler = (sock, eventData) => {
 
       // Clean up params
       const friendName = `${data.friendName}`; // cast to string
-
       const { userRowId } = getUser(socket.hash);
-      return db.addFriend([userRowId, friendName])
+
+      return db.getUserByName([friendName])
+        .then(friend => db.addFriend([userRowId, friend.id]))
         .then((res) => {
-          // TODO: Properly add friend and send feedback to user
+          // TODO: Send feedback to user
           console.log(friendName);
           console.log(res);
         })

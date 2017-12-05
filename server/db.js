@@ -93,6 +93,7 @@ const DBConstants = Object.freeze({
   LOGIN: 'SELECT `id` FROM `user` WHERE `username` = ? AND `password` = ?;',
   CREATE_USER: 'INSERT INTO `user` (`username`, `password`) VALUES (?, ?);',
   GET_USER: 'SELECT `id`, `username` AS name FROM `user` WHERE `id` = ?;',
+  GET_USER_BY_NAME: 'SELECT `id` FROM `user` WHERE `username` = ?;',
   GET_USER_DATA: 'SELECT `id`, `currency`, `level` AS lvl, `experience` AS xp, `stamina` FROM `user` WHERE `id` = ?;',
   SET_CURRENCY: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
   SET_LEVEL: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
@@ -141,6 +142,8 @@ module.exports.loginId = query(DBConstants.LOGIN, firstRow);
 module.exports.createUser = query(DBConstants.CREATE_USER, emptyObject);
 // [user_id] -> [user_id, username] -> {id, name}
 module.exports.getUser = query(DBConstants.GET_USER, firstRow);
+// [username] -> [user_id] -> {id}
+module.exports.getUserByName = query(DBConstants.GET_USER_BY_NAME, firstRow);
 // [user_id] -> [user_id, currency, level, experience, stamina] -> {id, currency, lvl, xp, stamina}
 module.exports.getUserData = query(DBConstants.GET_USER_DATA, firstRow);
 // [user_id, newVal] -> [] -> {}
