@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Navbar, ButtonGroup, Button, FormGroup, OverlayTrigger, Tooltip, Nav } from 'react-bootstrap';
+import { Navbar, ButtonGroup, Button, FormGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { emit } from './../scripts/socket';
 
 /**
@@ -37,7 +37,7 @@ class MainNav extends React.Component {
         </Navbar.Header>
         {
           this.props.loggedIn &&
-            <Nav>
+            <span>
               <Navbar.Text>
                 <OverlayTrigger
                   placement='bottom'
@@ -58,7 +58,7 @@ class MainNav extends React.Component {
               <Navbar.Text>
                 Stamina: {this.props.currentStamina}/{this.props.maxStamina}
               </Navbar.Text>
-            </Nav>
+            </span>
           }
         <Navbar.Form pullRight>
           <FormGroup>
