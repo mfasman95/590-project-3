@@ -8,7 +8,7 @@ const actionHandlers = {
   UPDATE_GEAR: (returnState, action) => {
     const rs = returnState;
 
-    rs[action.gear.id] = action.gear;
+    rs[action.gear.key] = action.gear;
     return rs;
   },
   DELETE_GEAR: (returnState, action) => {

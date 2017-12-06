@@ -7,23 +7,12 @@ const db = require('./../db.js');
 // #region Misc vars
 const { log } = console;
 
+// Probably should refactor down to the client
 const gatchaTypes = Object.freeze({
-  Bronze: {
-    name: 'Bronze',
-    goldReq: 10,
-  },
-  Silver: {
-    name: 'Silver',
-    goldReq: 100,
-  },
-  Gold: {
-    name: 'Gold',
-    goldReq: 1000,
-  },
-  Platinum: {
-    name: 'Platinum',
-    goldReq: 10000,
-  },
+  Bronze: 1,
+  Silver: 2,
+  Gold: 3,
+  Platinum: 4,
 });
 
 // Do error handling or something, lol
@@ -37,6 +26,7 @@ const sendList = (socket, string, key, method, params) => sendHelper(method, par
     const obj = {};
     obj[key] = val[keys[i]];
     if (obj[key]) {
+      obj[key].key = keys[i];
       reduxEmit(new Message(string, obj))(socket);
     }
   }
@@ -240,7 +230,6 @@ module.exports.clientEmitHandler = (sock, eventData) => {
     case 'gatchaRoll': {
       // data.type is the type of the gatcha roll
       // types: ['Bronze', 'Silver', 'Gold', 'Platinum']
-      console.log(data.type);
 
       // Check for all params
       if (!data.type) {
@@ -252,35 +241,14 @@ module.exports.clientEmitHandler = (sock, eventData) => {
 
       // Clean up params
       const type = `${data.type}`; // cast to string
-
       const { userRowId } = getUser(socket.hash);
-      let currentGoldAmount;
-      let newGoldAmount;
-      return db.getUserData([userRowId])
+
+      return db.rollGatcha([userRowId, gatchaTypes[type]])
         .then((res) => {
-          // Store current currency value for future use
-          currentGoldAmount = res.currency;
-
-          // User did not have the gold they needed for this roll
-          if (gatchaTypes[type].goldReq > currentGoldAmount) {
-            // TODO: How to properly shortcut promise?
-            return reduxErrorEmit({
-              code: 'InsufficientFunds',
-              message: 'You did not have enough funds for this transaction',
-            })(socket);
-          }
-
-          // If there are sufficient funds, recruit the hero!
-          // TODO: Figure out how to get second param of this function properly
-          return db.recruitChar([userRowId, 0]);
+          // Returns an adventurer in full data for your display pleasure
+          // TODO: Actually display said returned entity
+          console.log(res);
         })
-        .then(() => {
-          newGoldAmount = currentGoldAmount - gatchaTypes[data.type].goldReq;
-          return db.setCurrency([userRowId, newGoldAmount]);
-        })
-        .then(() => reduxEmit(new Message('UPDATE_GOLD', {
-          currency: newGoldAmount,
-        }))(socket))
         .catch(err => reduxErrorEmit(err)(socket));
     }
     default: { return log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }

@@ -16,6 +16,7 @@ const query = (queryString, func) => async (params) => {
     await initialize(); // Await the call
   } // Return a new Promise
   return new Promise((resolve, reject) => {
+    // console.log(`Query: ${queryString}\n\tParams: [${params}]`);
     // Now let's actually execute the parameter
     connection.execute(queryString, params)
       // If it succeeds
@@ -61,9 +62,8 @@ const firstRow = async (val) => {
 };
 
 // Loop through list and convert ids to values
-// This turns [baseId...] into {id: {id, <some_data>}, ...}
-// This lookup requires the convertFunc to provide data with an `id` field
-const convertList = (baseId, convertFunc) => async (val) => {
+// This expands arrays into objects of objects
+const convertList = (arrayId, baseId, convertFunc) => async (val) => {
   // Make a temporary promise list
   const promiseList = [];
   // Gets the rows
@@ -82,7 +82,7 @@ const convertList = (baseId, convertFunc) => async (val) => {
     // Loop through all the values
     for (let i = 0; i < args.length; i++) {
       // Add them to the return object
-      returnObj[args[i].id] = args[i];
+      returnObj[userList[i][arrayId]] = args[i];
     }
   });
   return returnObj;
@@ -96,12 +96,12 @@ const DBConstants = Object.freeze({
   GET_USER_BY_NAME: 'SELECT `id` FROM `user` WHERE `username` = ?;',
   GET_USER_DATA: 'SELECT `id`, `currency`, `level` AS lvl, `experience` AS xp, `stamina` FROM `user` WHERE `id` = ?;',
   SET_CURRENCY: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
-  SET_LEVEL: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
-  SET_EXPERIENCE: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
-  SET_STAMINA: 'UPDATE `user` SET `currency` = ? WHERE `id` = ?;',
+  SET_LEVEL: 'UPDATE `user` SET `level` = ? WHERE `id` = ?;',
+  SET_EXPERIENCE: 'UPDATE `user` SET `experience` = ? WHERE `id` = ?;',
+  SET_STAMINA: 'UPDATE `user` SET `stamina` = ? WHERE `id` = ?;',
 
-  GET_PARTY: 'SELECT `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ?;',
-  GET_EQUIP: 'SELECT `card_id` AS equip_id FROM `user_cards` WHERE `card_type` = 1 AND `user` = ?;',
+  GET_PARTY: 'SELECT `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ?;',
+  GET_EQUIP: 'SELECT `id` AS uuid, `card_id` AS equip_id FROM `user_cards` WHERE `card_type` = 1 AND `user` = ?;',
   GET_FRIENDS: 'SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ?;',
   ADD_FRIEND: 'INSERT INTO `friend_list` (`user`, `friend`) VALUES (?, ?);',
   RECRUIT_CHARACTER: 'INSERT INTO `user_cards` (`user`, `card_type`, `card_id`) VALUES (?, 0, ?);',
@@ -112,6 +112,7 @@ const DBConstants = Object.freeze({
   GET_EQUIPMENT: 'SELECT * FROM `equipment` WHERE `id` = ?;',
   GET_ALL_CHARS: 'SELECT `id` AS entity_id FROM `adventurer_lookup`;',
   GET_ALL_EQUIP: 'SELECT `id` AS equip_id FROM `equipment`;',
+  ROLL_CHARACTER: 'SELECT ROLL_GATCHA(?, ?) AS entity_id;',
 });
 
 /*
@@ -133,6 +134,8 @@ module.exports.getEquipment = query(DBConstants.GET_EQUIPMENT, firstRow);
 module.exports.getAllCharacters = query(DBConstants.GET_ALL_CHARS);
 // [] -> [equip_id...]
 module.exports.getAllEquipments = query(DBConstants.GET_ALL_EQUIP);
+// [user_id, gatcha_type] -> [entity_id] -> {entity_id: {<entity_vals>}}
+module.exports.rollGatcha = query(DBConstants.ROLL_CHARACTER, convertList('id', 'entity_id', module.exports.getCharacter));
 
 /* User management */
 
@@ -157,12 +160,12 @@ module.exports.setStamina = query(DBConstants.SET_STAMINA, emptyObject);
 
 /* User data */
 
-// [user_id] -> [entity_id...] -> {entity_id: {<entity_vals>}, ...}
-module.exports.partyList = query(DBConstants.GET_PARTY, convertList('entity_id', module.exports.getCharacter));
-// [user_id] -> [equip_id...] -> {equip_id: {<equip_vals>}, ...}
-module.exports.equipList = query(DBConstants.GET_EQUIP, convertList('equip_id', module.exports.getEquipment));
+// [user_id] -> [(uuid, entity_id)...] -> {uuid: {<entity_vals>}, ...}
+module.exports.partyList = query(DBConstants.GET_PARTY, convertList('uuid', 'entity_id', module.exports.getCharacter));
+// [user_id] -> [(uuid, equip_id)...] -> {uuid: {<equip_vals>}, ...}
+module.exports.equipList = query(DBConstants.GET_EQUIP, convertList('uuid', 'equip_id', module.exports.getEquipment));
 // [user_id] -> [user_id...] -> {id: {id, name}, ...}
-module.exports.friendList = query(DBConstants.GET_FRIENDS, convertList('user_id', module.exports.getUser));
+module.exports.friendList = query(DBConstants.GET_FRIENDS, convertList('id', 'user_id', module.exports.getUser));
 // [user_id, user_id] -> [] -> {}
 module.exports.addFriend = query(DBConstants.ADD_FRIEND, emptyObject);
 // [user_id, entity_id] -> [] -> {}

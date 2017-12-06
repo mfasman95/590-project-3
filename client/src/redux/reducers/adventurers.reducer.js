@@ -8,7 +8,7 @@ const actionHandlers = {
   UPDATE_ADVENTURER: (returnState, action) => {
     const rs = returnState;
 
-    rs[action.adventurer.id] = action.adventurer;
+    rs[action.adventurer.key] = action.adventurer;
     return rs;
   },
   DELETE_ADVENTURER: (returnState, action) => {

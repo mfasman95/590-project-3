@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
--- Host: %    Database: dragon_gatcha
+-- Host: localhost    Database: dragon_gatcha
 -- ------------------------------------------------------
 -- Server version	5.7.17-log
 
@@ -107,6 +107,33 @@ INSERT INTO `class` VALUES (1,'Fighter',10,6,'str'),(2,'Rogue',8,5,'dex'),(3,'Wi
 UNLOCK TABLES;
 
 --
+-- Table structure for table `enemy`
+--
+
+DROP TABLE IF EXISTS `enemy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `enemy` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `challenge` int(10) unsigned NOT NULL DEFAULT '1',
+  `health` int(10) unsigned NOT NULL DEFAULT '1',
+  `attack` int(10) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table of enemies.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `enemy`
+--
+
+LOCK TABLES `enemy` WRITE;
+/*!40000 ALTER TABLE `enemy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `enemy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `equipment`
 --
 
@@ -160,6 +187,33 @@ LOCK TABLES `friend_list` WRITE;
 /*!40000 ALTER TABLE `friend_list` DISABLE KEYS */;
 INSERT INTO `friend_list` VALUES (2,1,1);
 /*!40000 ALTER TABLE `friend_list` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `gatcha`
+--
+
+DROP TABLE IF EXISTS `gatcha`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gatcha` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `required` int(10) unsigned NOT NULL DEFAULT '10' COMMENT 'The required currency to roll on this gatcha.',
+  `maxLevel` int(10) unsigned NOT NULL DEFAULT '5',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='Table of Roll Types (''gatcha''), ie. "Bronze", "Platinum", etc.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gatcha`
+--
+
+LOCK TABLES `gatcha` WRITE;
+/*!40000 ALTER TABLE `gatcha` DISABLE KEYS */;
+INSERT INTO `gatcha` VALUES (1,'Bronze',10,5),(2,'Silver',100,10),(3,'Gold',1000,15),(4,'Platinum',10000,20);
+/*!40000 ALTER TABLE `gatcha` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -266,7 +320,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','thebestpassword',47,1,1,1);
+INSERT INTO `user` VALUES (1,'admin','thebestpassword',208747,1,1,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -316,7 +370,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`%` FUNCTION `CALCULATE_HIT`(adv_id INT) RETURNS int(11)
+CREATE DEFINER=`root`@`localhost` FUNCTION `CALCULATE_HIT`(adv_id INT) RETURNS int(11)
 BEGIN
 	DECLARE atk INT DEFAULT (SELECT `modifier` from `dragon_gatcha`.`score` where `score` = stat_lookup(adv_id));
     DECLARE prf INT DEFAULT (SELECT `bonus` from `dragon_gatcha`.`proficiency` where `level` = (SELECT `level` FROM `dragon_gatcha`.`adventurer` WHERE `id` = adv_id));
@@ -337,7 +391,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`%` FUNCTION `CALCULATE_HP`(adv_id INT) RETURNS int(11)
+CREATE DEFINER=`root`@`localhost` FUNCTION `CALCULATE_HP`(adv_id INT) RETURNS int(11)
 BEGIN
 DECLARE cls INT DEFAULT (SELECT `class` FROM `dragon_gatcha`.`adventurer` WHERE `id` = adv_id);
 DECLARE con INT DEFAULT (SELECT `con` FROM `dragon_gatcha`.`adventurer` WHERE `id` = adv_id);
@@ -347,6 +401,42 @@ return (
 (SELECT `modifier` FROM `dragon_gatcha`.`score` WHERE `score` = con) +
 (lvl - 1) * (SELECT `hp_level` FROM `dragon_gatcha`.`class` WHERE `id` = cls)
 );
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `roll_gatcha` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `roll_gatcha`(user_id INT, gatcha_type INT) RETURNS int(1)
+BEGIN
+	# All declares have to be at the top, yay....
+	DECLARE currentMoney INT DEFAULT (SELECT `currency` FROM `user` WHERE `id` = user_id);
+    DECLARE requiredMoney INT DEFAULT (SELECT `required` FROM `gatcha` WHERE `id` = gatcha_type);
+	DECLARE maxLevel INT DEFAULT (SELECT `maxLevel` FROM `gatcha` WHERE `id` = gatcha_type);
+    DECLARE adventurer INT DEFAULT -1; # No adventurer
+    # Define a return variable
+    DECLARE retVar INT DEFAULT -1; # Should never happen!
+
+	# Check if we have enough money
+    IF (currentMoney < requiredMoney) THEN SET retVar = -2; # Not enough money!
+    ELSE # Roll on the table
+		UPDATE `user` SET `currency` = (currentMoney - requiredMoney) WHERE `id` = user_id;
+		SET adventurer = (SELECT `id` FROM `adventurer` WHERE `level` <= maxLevel ORDER BY RAND() LIMIT 1);
+        INSERT INTO `user_cards` (`user`, `card_type`, `card_id`) VALUES (user_id, 0, adventurer);
+        SET retVar = adventurer; # We have a success!
+    END IF;
+	# Return the setting!
+RETURN retVar;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -363,7 +453,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`%` FUNCTION `stat_lookup`(adv_id INT) RETURNS int(11)
+CREATE DEFINER=`root`@`localhost` FUNCTION `stat_lookup`(adv_id INT) RETURNS int(11)
 BEGIN
 	DECLARE lookup VARCHAR(3) DEFAULT (select `atk_stat` from `dragon_gatcha`.`class` where `id` = (SELECT `class` FROM `dragon_gatcha`.`adventurer` WHERE `id` = adv_id));
 	CASE lookup
@@ -394,7 +484,7 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `adventurer_lookup` AS select `adventurer`.`id` AS `id`,`adventurer`.`level` AS `level`,`adventurer`.`name` AS `name`,`race`.`name` AS `race`,`class`.`name` AS `class`,`adventurer`.`str` AS `str`,`adventurer`.`dex` AS `dex`,`adventurer`.`int` AS `int`,`adventurer`.`wis` AS `wis`,`adventurer`.`con` AS `con`,`adventurer`.`cha` AS `cha`,`CALCULATE_HP`(`adventurer`.`id`) AS `hp`,`CALCULATE_HIT`(`adventurer`.`id`) AS `hit` from ((`adventurer` join `class` on((`adventurer`.`class` = `class`.`id`))) join `race` on((`adventurer`.`race` = `race`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -409,4 +499,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-04 20:47:19
+-- Dump completed on 2017-12-05 20:24:00
