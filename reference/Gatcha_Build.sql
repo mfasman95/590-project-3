@@ -336,6 +336,8 @@ CREATE TABLE `user_cards` (
   `user` int(10) unsigned NOT NULL,
   `card_type` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '0 = ''Adventurer'', 1 = ''Equipment''',
   `card_id` int(10) unsigned NOT NULL,
+  `party` int(1) unsigned NOT NULL DEFAULT '0' COMMENT '1 if part of the party, 0 otherwise. Should only be 3 active at a time, maintained through the client-side.',
+  `support` int(1) unsigned NOT NULL DEFAULT '0' COMMENT '1 if it''s the support, 0 otherwise. Should be unique, though that''s up to the client-side.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `user_idx` (`user`),
@@ -349,7 +351,7 @@ CREATE TABLE `user_cards` (
 
 LOCK TABLES `user_cards` WRITE;
 /*!40000 ALTER TABLE `user_cards` DISABLE KEYS */;
-INSERT INTO `user_cards` VALUES (1,1,0,3),(2,1,0,2),(3,1,0,5),(4,1,1,1),(5,1,1,4);
+INSERT INTO `user_cards` VALUES (1,1,0,3,0,0),(2,1,0,2,0,0),(3,1,0,5,0,0),(4,1,1,1,0,0),(5,1,1,4,0,0);
 /*!40000 ALTER TABLE `user_cards` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,4 +501,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-05 20:24:00
+-- Dump completed on 2017-12-05 20:40:12

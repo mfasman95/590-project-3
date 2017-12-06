@@ -106,7 +106,8 @@ const DBConstants = Object.freeze({
   ADD_FRIEND: 'INSERT INTO `friend_list` (`user`, `friend`) VALUES (?, ?);',
   RECRUIT_CHARACTER: 'INSERT INTO `user_cards` (`user`, `card_type`, `card_id`) VALUES (?, 0, ?);',
   RECRUIT_EQUIPMENT: 'INSERT INTO `user_cards` (`user`, `card_type`, `card_id`) VALUES (?, 1, ?);',
-
+  GET_ACTIVE: 'SELECT `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ? AND `party` = 1;',
+  GET_SUPPORT: 'SELECT `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ? AND `support` = 1;',
 
   GET_CHARACTER: 'SELECT * FROM `adventurer_lookup` WHERE `id` = ?;',
   GET_EQUIPMENT: 'SELECT * FROM `equipment` WHERE `id` = ?;',
@@ -172,3 +173,7 @@ module.exports.addFriend = query(DBConstants.ADD_FRIEND, emptyObject);
 module.exports.recruitChar = query(DBConstants.RECRUIT_CHARACTER, emptyObject);
 // [user_id, equip_id] -> [] -> {}
 module.exports.summonEquip = query(DBConstants.RECRUIT_EQUIPMENT, emptyObject);
+// [user_id] = [(uuid, entity_id)...] -> {uuid: {<entity_vals>}, ...}
+module.exports.getActive = query(DBConstants.GET_ACTIVE, convertList('uuid', 'entity_id', module.exports.getCharacter));
+// [user_id] = [uuid, entity_id] -> {uuid: {<entity_vals>}}
+module.exports.getSupport = query(DBConstants.GET_SUPPORT, convertList('uuid', 'entity_id', module.exports.getCharacter));
