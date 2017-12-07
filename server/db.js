@@ -113,9 +113,11 @@ const DBConstants = Object.freeze({
 
   GET_CHARACTER: 'SELECT * FROM `adventurer_lookup` WHERE `id` = ?;',
   GET_EQUIPMENT: 'SELECT * FROM `equipment` WHERE `id` = ?;',
+  GET_ENEMY: 'SELECT * FROM `enemy` WHERE `id` = ?;',
   GET_ALL_CHARS: 'SELECT `id` AS entity_id FROM `adventurer_lookup`;',
   GET_ALL_EQUIP: 'SELECT `id` AS equip_id FROM `equipment`;',
   ROLL_CHARACTER: 'SELECT ROLL_GATCHA(?, ?) AS entity_id;',
+  ROLL_ENEMIES: 'SELECT `id` FROM `enemy` WHERE `challenge` = ? ORDER BY RAND() LIMIT ?;',
 });
 
 /*
@@ -133,12 +135,16 @@ BE **ESPECIALLY** CAREFUL WITH THE `INSERT` METHODS, FOR OBVIOUS REASONS.
 module.exports.getCharacter = query(DBConstants.GET_CHARACTER, firstRow);
 // [equip_id] -> [id, is_armor, name] -> {id, is_armor, name}
 module.exports.getEquipment = query(DBConstants.GET_EQUIPMENT, firstRow);
+// [enemy_id] -> [id, name, challenge, health, attack] -> {id, name, challenge, health, attack}
+module.exports.getEnemy = query(DBConstants.GET_ENEMY, firstRow);
 // [] -> [entity_id...]
 module.exports.getAllCharacters = query(DBConstants.GET_ALL_CHARS);
 // [] -> [equip_id...]
 module.exports.getAllEquipments = query(DBConstants.GET_ALL_EQUIP);
 // [user_id, gatcha_type] -> [entity_id] -> {entity_id: {<entity_vals>}}
 module.exports.rollGatcha = query(DBConstants.ROLL_CHARACTER, convertList('id', 'entity_id', module.exports.getCharacter));
+// [challenge_rating, num_enemies] -> [enemy_id...] -> {enemy_id: {<enemy_vals>}, ...}
+module.exports.createEncounter = query(DBConstants.ROLL_ENEMIES, convertList('id', 'id', module.exports.getEnemy));
 
 /* User management */
 
