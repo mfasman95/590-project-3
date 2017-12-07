@@ -90,66 +90,48 @@ class MainNav extends React.Component {
             {
               this.props.loggedIn &&
                 <ButtonGroup>
-                  {
-                    this.props.page !== 'Home' &&
-                      <OverlayNavButton
-                        tooltipId='ReturnHome'
-                        tooltipText='Return Home'
-                        onClick={() => {emit('changePage', { page: 'Home' })}}
-                        disabled={this.props.inGame}
-                        iconString='fa-home'
-                      />
-                  }
-                  {
-                    this.props.page !== 'ManageParty' &&
-                      <OverlayNavButton
-                        tooltipId='ManageParty'
-                        tooltipText='Manage Party'
-                        onClick={() => {emit('changePage', { page: 'ManageParty' })}}
-                        disabled={this.props.inGame}
-                        iconString='fa-users'
-                      />
-                  }
-                  {
-                    this.props.page !== 'Recruit' &&
-                      <OverlayNavButton
-                        tooltipId='Recruit'
-                        tooltipText='Recruitment Page'
-                        onClick={() => {emit('changePage', { page: 'Recruit' })}}
-                        disabled={this.props.inGame}
-                        iconString='fa-superpowers'
-                      />
-                  }
-                  {
-                    this.props.page !== 'Friends' &&
-                      <OverlayNavButton
-                        tooltipId='Friends'
-                        tooltipText='Friend List'
-                        onClick={() => {emit('changePage', { page: 'Friends' })}}
-                        disabled={this.props.inGame}
-                        iconString='fa-address-book'
-                      />
-                  }
-                  {
-                    this.props.page !== 'MicroTransactions' &&
-                      <OverlayNavButton
-                        tooltipId='PurchaseCurrency'
-                        tooltipText='Purchase Currency'
-                        onClick={() => {emit('changePage', { page: 'MicroTransactions' })}}
-                        disabled={this.props.inGame}
-                        iconString='fa-dollar'
-                      />
-                  }
-                  {
-                    this.props.page !== 'Options' &&
-                      <OverlayNavButton
-                        tooltipId='Options'
-                        tooltipText='Options'
-                        onClick={() => {emit('changePage', { page: 'Options' })}}
-                        disabled={this.props.inGame}
-                        iconString='fa-gears'
-                      />
-                  }
+                  <OverlayNavButton
+                    tooltipId='ReturnHome'
+                    tooltipText='Return Home'
+                    onClick={() => {emit('changePage', { page: 'Home' })}}
+                    disabled={this.props.inGame || (this.props.page === 'Home')}
+                    iconString='fa-home'
+                  />
+                  <OverlayNavButton
+                    tooltipId='ManageParty'
+                    tooltipText='Manage Party'
+                    onClick={() => {emit('changePage', { page: 'ManageParty' })}}
+                    disabled={this.props.inGame || (this.props.page === 'ManageParty')}
+                    iconString='fa-users'
+                  />
+                  <OverlayNavButton
+                    tooltipId='Recruit'
+                    tooltipText='Recruitment Page'
+                    onClick={() => {emit('changePage', { page: 'Recruit' })}}
+                    disabled={this.props.inGame || (this.props.page === 'Recruit')}
+                    iconString='fa-superpowers'
+                  />
+                  <OverlayNavButton
+                    tooltipId='Friends'
+                    tooltipText='Friend List'
+                    onClick={() => {emit('changePage', { page: 'Friends' })}}
+                    disabled={this.props.inGame || (this.props.page === 'Friends')}
+                    iconString='fa-address-book'
+                  />
+                  <OverlayNavButton
+                    tooltipId='PurchaseCurrency'
+                    tooltipText='Purchase Currency'
+                    onClick={() => {emit('changePage', { page: 'MicroTransactions' })}}
+                    disabled={this.props.inGame || (this.props.page === 'MicroTransactions')}
+                    iconString='fa-dollar'
+                  />
+                  <OverlayNavButton
+                    tooltipId='Options'
+                    tooltipText='Options'
+                    onClick={() => {emit('changePage', { page: 'Options' })}}
+                    disabled={this.props.inGame || (this.props.page === 'Options')}
+                    iconString='fa-gears'
+                  />
                   <OverlayNavButton
                     tooltipId='Logout'
                     tooltipText='Log Out'
