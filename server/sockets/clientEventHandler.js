@@ -36,6 +36,9 @@ const sendObj = (socket, string, method, params) => sendHelper(method, params, (
 });
 
 const changePage = (page, socket) => {
+  const { userRowId } = getUser(socket.hash);
+  sendObj(socket, 'UPDATE_STATS', db.getUserData, [userRowId]);
+
   switch (page) {
     case 'Login': {
       // There should be no old state on Login page
@@ -50,18 +53,20 @@ const changePage = (page, socket) => {
       break;
     }
     case 'Friends': {
-      const { userRowId } = getUser(socket.hash);
+      // getSelectedSupport
+      // Ensure that friends list is two entries
+      // Add db function for grabbing friend entry whose support is selected
+
       sendList(socket, 'UPDATE_FRIEND', 'friend', db.friendList, [userRowId]);
       break;
     }
     case 'Home': {
-      // Dunno where to put this, lol
-      const { userRowId } = getUser(socket.hash);
-      sendObj(socket, 'UPDATE_STATS', db.getUserData, [userRowId]);
+      db.getActive([userRowId])
+        .then(party => reduxEmit(new Message('UPDATE_PARTY', party)(socket)))
+        .catch(err => reduxErrorEmit(err)(socket));
       break;
     }
     case 'ManageParty': {
-      const { userRowId } = getUser(socket.hash);
       sendList(socket, 'UPDATE_ADVENTURER', 'adventurer', db.partyList, [userRowId]);
       sendList(socket, 'UPDATE_GEAR', 'gear', db.equipList, [userRowId]);
       break;
@@ -79,13 +84,11 @@ const changePage = (page, socket) => {
       break;
     }
     case 'Adventure': {
-      const user = getUser(socket.hash);
-
-      db.startEncounter([user.userRowId])
+      db.startEncounter([userRowId])
         .then((res) => {
           const { enemies } = res;
 
-          const encounter = user.startEncounter(enemies);
+          const encounter = getUser(socket.hash).startEncounter(enemies);
 
           return reduxEmit(new Message('UPDATE_GAME_STATE', {
             gameState: {
