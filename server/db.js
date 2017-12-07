@@ -127,7 +127,7 @@ BE **ESPECIALLY** CAREFUL WITH THE `INSERT` METHODS, FOR OBVIOUS REASONS.
 
 /* Lookup Methods */
 
-// [entity_id] -> [id, level, name, race, class, str, dex, int, wis, con, cha, hp, hit] -> {<vals>}
+// [entity_id] -> [id, level, name, race, className, str, dex, int, wis, con, cha, hp, hit] -> {<>}
 module.exports.getCharacter = query(DBConstants.GET_CHARACTER, firstRow);
 // [equip_id] -> [id, is_armor, name] -> {id, is_armor, name}
 module.exports.getEquipment = query(DBConstants.GET_EQUIPMENT, firstRow);

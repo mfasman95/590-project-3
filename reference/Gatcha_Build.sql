@@ -66,7 +66,7 @@ SET character_set_client = utf8;
  1 AS `level`,
  1 AS `name`,
  1 AS `race`,
- 1 AS `class`,
+ 1 AS `className`,
  1 AS `str`,
  1 AS `dex`,
  1 AS `int`,
@@ -487,7 +487,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `adventurer_lookup` AS select `adventurer`.`id` AS `id`,`adventurer`.`level` AS `level`,`adventurer`.`name` AS `name`,`race`.`name` AS `race`,`class`.`name` AS `class`,`adventurer`.`str` AS `str`,`adventurer`.`dex` AS `dex`,`adventurer`.`int` AS `int`,`adventurer`.`wis` AS `wis`,`adventurer`.`con` AS `con`,`adventurer`.`cha` AS `cha`,`CALCULATE_HP`(`adventurer`.`id`) AS `hp`,`CALCULATE_HIT`(`adventurer`.`id`) AS `hit` from ((`adventurer` join `class` on((`adventurer`.`class` = `class`.`id`))) join `race` on((`adventurer`.`race` = `race`.`id`))) */;
+/*!50001 VIEW `adventurer_lookup` AS select `adventurer`.`id` AS `id`,`adventurer`.`level` AS `level`,`adventurer`.`name` AS `name`,`race`.`name` AS `race`,`class`.`name` AS `className`,`adventurer`.`str` AS `str`,`adventurer`.`dex` AS `dex`,`adventurer`.`int` AS `int`,`adventurer`.`wis` AS `wis`,`adventurer`.`con` AS `con`,`adventurer`.`cha` AS `cha`,`CALCULATE_HP`(`adventurer`.`id`) AS `hp`,`CALCULATE_HIT`(`adventurer`.`id`) AS `hit` from ((`adventurer` join `class` on((`adventurer`.`class` = `class`.`id`))) join `race` on((`adventurer`.`race` = `race`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -501,4 +501,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-05 20:40:12
+-- Dump completed on 2017-12-06 20:50:30
