@@ -53,9 +53,7 @@ const changePage = (page, socket) => {
       break;
     }
     case 'Friends': {
-      // getSelectedSupport
-      // Ensure that friends list is two entries
-      // Add db function for grabbing friend entry whose support is selected
+      // getActiveFriend is the new function's name
 
       sendList(socket, 'UPDATE_FRIEND', 'friend', db.friendList, [userRowId]);
       break;
@@ -220,13 +218,16 @@ module.exports.clientEmitHandler = (sock, eventData) => {
       // Clean up params
       const friendName = `${data.friendName}`; // cast to string
       const { userRowId } = getUser(socket.hash);
+      let friendId;
 
       return db.getUserByName([friendName])
-        .then(friend => db.addFriend([userRowId, friend.id]))
-        .then((res) => {
-          // TODO: Send feedback to user
-          console.log(friendName);
-          console.log(res);
+        .then((friend) => {
+          friendId = friend.id;
+          return db.addFriend([userRowId, friendId]);
+        })
+        .then(() => {
+          const obj = { id: friendId, name: friendName };
+          reduxEmit(new Message('UPDATE_FRIEND', { friend: obj }))(socket);
         })
         .catch(err => reduxErrorEmit(err)(socket));
     }

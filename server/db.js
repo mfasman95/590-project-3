@@ -103,13 +103,14 @@ const DBConstants = Object.freeze({
   GET_PARTY: 'SELECT `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ?;',
   GET_EQUIP: 'SELECT `id` AS uuid, `card_id` AS equip_id FROM `user_cards` WHERE `card_type` = 1 AND `user` = ?;',
   GET_FRIENDS: 'SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ?;',
-  ADD_FRIEND: 'INSERT INTO `friend_list` (`user`, `friend`) VALUES (?, ?);',
+  ADD_FRIEND: 'INSERT INTO `friend_list` (`user`, `friend`) VALUES (?, ?), (?, ?);',
   RECRUIT_CHARACTER: 'INSERT INTO `user_cards` (`user`, `card_type`, `card_id`) VALUES (?, 0, ?);',
   RECRUIT_EQUIPMENT: 'INSERT INTO `user_cards` (`user`, `card_type`, `card_id`) VALUES (?, 1, ?);',
   GET_ACTIVE: 'SELECT `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ? AND `party` = 1;',
   GET_SUPPORT: 'SELECT `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ? AND `support` = 1;',
   SET_ACTIVE: 'UPDATE `user_cards` SET `party` = ? WHERE `user` = ? AND `card_id` = ? AND `card_type` = 0;',
   SET_SUPPORT: 'UPDATE `user_cards` SET `support` = ? WHERE `user` = ? AND `card_id` = ? AND `card_type` = 0;',
+  GET_ACTIVE_FRIEND: 'SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ? AND `active` = 1;',
 
   GET_CHARACTER: 'SELECT * FROM `adventurer_lookup` WHERE `id` = ?;',
   GET_EQUIPMENT: 'SELECT * FROM `equipment` WHERE `id` = ?;',
@@ -176,7 +177,8 @@ module.exports.equipList = query(DBConstants.GET_EQUIP, convertList('uuid', 'equ
 // [user_id] -> [user_id...] -> {id: {id, name}, ...}
 module.exports.friendList = query(DBConstants.GET_FRIENDS, convertList('id', 'user_id', module.exports.getUser));
 // [user_id, user_id] -> [] -> {}
-module.exports.addFriend = query(DBConstants.ADD_FRIEND, emptyObject);
+module.exports.addFriend = arr => // Passes in the same arg twice so a -> b is also b -> a
+  query(DBConstants.ADD_FRIEND, emptyObject)([arr[0], arr[1], arr[1], arr[0]]);
 // [user_id, entity_id] -> [] -> {}
 module.exports.recruitChar = query(DBConstants.RECRUIT_CHARACTER, emptyObject);
 // [user_id, equip_id] -> [] -> {}
@@ -189,3 +191,5 @@ module.exports.getSupport = query(DBConstants.GET_SUPPORT, convertList('uuid', '
 module.exports.setActive = query(DBConstants.SET_ACTIVE, emptyObject);
 // [update, user_id, entity_id] -> [] -> {}
 module.exports.setSupport = query(DBConstants.SET_SUPPORT, emptyObject);
+// [user_id] -> [user_id] -> {user_id: {<entity_vals>}}
+module.exports.getActiveFriend = query(DBConstants.GET_ACTIVE_FRIEND, convertList('user_id', 'user_id', module.exports.getSupport));
