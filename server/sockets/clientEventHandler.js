@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const { reduxEmit, reduxErrorEmit } = require('./emit');
-const { getUser } = require('./users');
+const { getUser, getUserByDBID } = require('./users');
 const { Message } = require('./../classes');
 const db = require('./../db.js');
 
@@ -202,6 +202,41 @@ module.exports.clientEmitHandler = (sock, eventData) => {
       return changePage('Adventure', socket);
     }
     case 'adventureEnd': {
+      // Check parameters
+      if (!data.success || !data.friendId || !data.encounter) {
+        return reduxErrorEmit({
+          code: 'MissingParams',
+          message: 'Success, Friend ID, and Encounter Token is required.',
+        })(socket);
+      }
+      // Test the user encounter token
+      const user = getUser(socket.hash);
+      if (data.encounter !== user.encounter) {
+        return reduxErrorEmit({
+          code: 'ErrorParams',
+          message: 'Invalid Encounter Token!',
+        })(socket);
+      }
+      const friend = getUserByDBID(data.friendId);
+      const gainedXP = data.success ? 20 : 10; // TODO: Temp numbers
+      // Get their current XP value
+      db.getUserData([data.friendId]).then((val) => {
+        // Add their gained support XP to it
+        const newXP = val.xp + gainedXP;
+        // Update it in the database
+        db.setExperience([data.friendId, newXP]).then(() => {
+          // If the friend is online
+          if (friend) {
+            // Send the new XP value to them
+            reduxEmit(new Message('UPDATE_EXPERIENCE', {
+              xp: newXP,
+            }))(friend.socket);
+          } // Otherwise store it for later?
+          // TODO: Store it for later
+        }).catch(err => reduxErrorEmit(err)(socket));
+      }).catch(err => reduxErrorEmit(err)(socket));
+
+      // Redirect to the homepage, etc.
       reduxEmit(new Message('ADVENTURE_END'))(socket);
       changePage('Home', socket);
       return reduxEmit(new Message('CLEAR_GAME_STATE'))(socket);
