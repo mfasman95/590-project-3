@@ -6,13 +6,27 @@ const initialState = {};
 // Handle actions dispatched to the reducer
 const actionHandlers = {
   CLEAR_SESSION: () => initialState,
-  UPDATE_GAME_STATE: (returnState, action) => {
-    let rs = returnState;
+  UPDATE_PARTY: (returnState, action) => {
+    const rs = returnState;
 
-    rs = action.gameState;
+    const partyMemberKeys = Object.keys(action.partyMembers);
+    for (let i = 0; i < partyMemberKeys.length; i++) {
+      rs[partyMemberKeys[i]] = action.partyMembers[partyMemberKeys[i]];
+    }
     return rs;
   },
-  CLEAR_GAME_STATE: () => initialState,
+  UPDATE_PARTY_MEMBER: (returnState, action) => {
+    const rs = returnState;
+
+    rs[action.partyMember.key] = action.partyMember;
+    return rs;
+  },
+  DELETE_PARTY_MEMEBER: (returnState, action) => {
+    const rs = returnState;
+
+    delete rs[action.id];
+    return rs;
+  },
 };
 
 // Export the reducer

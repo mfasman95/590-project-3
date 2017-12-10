@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-const { reduxEmit, reduxErrorEmit } = require('./emit');
+const { reduxEmit, reduxErrorEmit, rdxErrTypes } = require('./emit');
 const { getUser, getUserByDBID } = require('./users');
 const { Message } = require('./../classes');
 const db = require('./../db.js');
@@ -60,8 +60,13 @@ const changePage = (page, socket) => {
     }
     case 'Home': {
       db.getActive([userRowId])
-        .then(party => reduxEmit(new Message('UPDATE_PARTY', party)(socket)))
-        .catch(err => reduxErrorEmit(err)(socket));
+        .then(party => reduxEmit(new Message('UPDATE_PARTY', {
+          partyMembers: party,
+        }))(socket))
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.updateParty)(socket);
+        });
       break;
     }
     case 'ManageParty': {
@@ -97,7 +102,10 @@ const changePage = (page, socket) => {
             },
           }));
         })
-        .catch(err => reduxErrorEmit(err)(socket));
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.updateGameState)(socket);
+        });
       break;
     }
     default: { log(chalk.bold.yellow(`ERROR: Page ${page} cannot be navigated to`)); }
@@ -153,7 +161,10 @@ module.exports.clientEmitHandler = (sock, eventData) => {
       return db.createUser([username, pass1])
         .then(() => db.loginId([username, pass1]))
         .then(res => loginResponse(socket, res, username))
-        .catch(err => reduxErrorEmit(err)(socket));
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.createUser)(socket);
+        });
     }
     case 'login': {
       // Check for all params
@@ -180,7 +191,10 @@ module.exports.clientEmitHandler = (sock, eventData) => {
           }
           return loginResponse(socket, res, username);
         })
-        .catch(err => reduxErrorEmit(err)(socket));
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.loginError)(socket);
+        });
     }
     case 'logout': {
       const user = getUser(socket.hash);
@@ -219,22 +233,27 @@ module.exports.clientEmitHandler = (sock, eventData) => {
       }
       const friend = getUserByDBID(data.friendId);
       const gainedXP = data.success ? 20 : 10; // TODO: Temp numbers
+      let newXP;
       // Get their current XP value
-      db.getUserData([data.friendId]).then((val) => {
-        // Add their gained support XP to it
-        const newXP = val.xp + gainedXP;
-        // Update it in the database
-        db.setExperience([data.friendId, newXP]).then(() => {
+      db.getUserData([data.friendId])
+        .then((val) => {
+          // Add their gained support XP to it
+          newXP = val.xp + gainedXP;
+          // Update it in the database
+          return db.setExperience([data.friendId, newXP]);
+        })
+        .then(() => {
           // If the friend is online
           if (friend) {
             // Send the new XP value to them
-            reduxEmit(new Message('UPDATE_EXPERIENCE', {
-              xp: newXP,
-            }))(friend.socket);
+            reduxEmit(new Message('UPDATE_EXPERIENCE', { xp: newXP }))(friend.socket);
           } // Otherwise store it for later?
           // TODO: Store it for later
-        }).catch(err => reduxErrorEmit(err)(socket));
-      }).catch(err => reduxErrorEmit(err)(socket));
+        })
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.adventureEnd)(socket);
+        });
 
       // Redirect to the homepage, etc.
       reduxEmit(new Message('ADVENTURE_END'))(socket);
@@ -264,7 +283,10 @@ module.exports.clientEmitHandler = (sock, eventData) => {
           const obj = { id: friendId, name: friendName };
           reduxEmit(new Message('UPDATE_FRIEND', { friend: obj }))(socket);
         })
-        .catch(err => reduxErrorEmit(err)(socket));
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.addFriend)(socket);
+        });
     }
     case 'gatchaRoll': {
       // data.type is the type of the gatcha roll
@@ -288,7 +310,30 @@ module.exports.clientEmitHandler = (sock, eventData) => {
           // TODO: Actually display said returned entity
           console.log(res);
         })
-        .catch(err => reduxErrorEmit(err)(socket));
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.rollGatcha)(socket);
+        });
+    }
+    case 'addToParty': {
+      if (!data.id || !data.key) {
+        return reduxErrorEmit(rdxErrTypes.addPartyMember)(socket);
+      }
+
+      const { userRowId } = getUser(socket.hash);
+
+      return db.setActive([0, userRowId, data.key])
+        .then(() => db.getCharacter([data.id]))
+        .then((character) => {
+          const char = character;
+          char.key = data.key;
+
+          return reduxEmit(new Message('UPDATE_PARTY_MEMBER', { partyMember: char }))(socket);
+        })
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.addPartyMember)(socket);
+        });
     }
     default: { return log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }
   }

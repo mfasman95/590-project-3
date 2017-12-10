@@ -13,6 +13,7 @@ class AdventurerPanel extends React.Component {
       id,
       name,
       race,
+      className,
       level,
       str,
       dex,
@@ -22,10 +23,9 @@ class AdventurerPanel extends React.Component {
       cha,
       hp,
       hit,
+      key,
     } = this.props.adventurer;
     
-    // Handle the fact that class is a reserved word
-    const className = this.props.adventurer.class;
     return (  
       <Panel style={panelStyle}>
         <Row>
@@ -64,8 +64,9 @@ class AdventurerPanel extends React.Component {
             <ButtonGroup vertical block>
               <Button bsStyle='success' disabled={this.props.fullParty} onClick={
                 () => {
-                  emit('addToParty', { id });
-                  console.log(`Adding ${id}-${name} to party`);
+                  console.log(key);
+                  emit('addToParty', { key, id });
+                  console.log(`Adding ${key}-${id}-${name} to party`);
                 }
               }>Add To Party</Button>
               <Button bsStyle='danger' disabled>Scrap <i className='fa fa-trash'/></Button>

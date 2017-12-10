@@ -16,7 +16,51 @@ const emit = type => message => (socket) => {
 module.exports.genericEmit = emit('generic');
 module.exports.reduxEmit = emit('redux');
 
-module.exports.reduxErrorEmit = data => module.exports.reduxEmit(new Message('ERROR_SNACK', data));
+module.exports.reduxErrorEmit = (error, customTimeout) => module.exports.reduxEmit(new Message('RRS_SHOW_SNACK', {
+  payload: {
+    id: error.code,
+    data: {
+      label: error.message,
+      timeout: customTimeout || 5000,
+      button: { label: 'x' },
+    },
+  },
+}));
+
+module.exports.rdxErrTypes = Object.freeze({
+  updateParty: {
+    code: 'updatePartyError',
+    message: 'Unexpected Error When Retrieving Party',
+  },
+  updateGameState: {
+    code: 'updateGameStateError',
+    message: 'Unexpected Error When Updating Game State',
+  },
+  createUser: {
+    code: 'createUserError',
+    message: 'Unexpected Error When Creating User',
+  },
+  loginError: {
+    code: 'LoginError',
+    message: 'Unexpected Error During Login',
+  },
+  adventureEnd: {
+    code: 'adventureEndError',
+    message: 'Unexptected Error When Ending Adventure',
+  },
+  addFriend: {
+    code: 'addFriendError',
+    message: 'Unexpected Error When Adding Friend',
+  },
+  rollGatcha: {
+    code: 'rollGatchaError',
+    message: 'Unexpected Error When Recruiting a New Hero',
+  },
+  addPartyMember: {
+    code: 'addPartyMemberError',
+    message: 'Unexpected Error When Adding Party Member',
+  },
+});
 // #endregion Base Emit Functions
 
 // #region Emit To Room

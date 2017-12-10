@@ -1,26 +1,11 @@
 import React from 'react';
 import GearPanel from './../custom/GearPanel';
 import AdventurerPanel from './../custom/AdventurerPanel';
-import { Well, Row, Col, PageHeader, Panel, Button } from 'react-bootstrap';
+import PartyDisplay from './../custom/PartyDisplay';
+import { Well, Row, Col, PageHeader } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 class ManageParty extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      adventurersInParty: ['Example1', 'Example2', 'Example3'],
-    }
-
-    this.removeAdventurerFromParty = this.removeAdventurerFromParty.bind(this);
-  }
-
-  removeAdventurerFromParty(name) {
-    const { adventurersInParty } = this.state;
-    const index = adventurersInParty.indexOf(name);
-    this.setState({ adventurersInParty: adventurersInParty.slice(0, index).concat(adventurersInParty.slice(index + 1)) });
-  }
-
   render() {
     const gearKeys = Object.keys(this.props.gear);
     const adventurerKeys = Object.keys(this.props.adventurers);
@@ -29,31 +14,7 @@ class ManageParty extends React.Component {
         <PageHeader>Manage Party Page</PageHeader>
         <Row>
           <Col xs={12}>
-            <h3><b>Party</b></h3>
-            <Well>
-              <Row>
-                {
-                  this.state.adventurersInParty.length <= 0 ?
-                    // Render the no adventurers result
-                    <h3>Your party is empty</h3> :
-                    // Render the adventurers list
-                    this.state.adventurersInParty.map((name) => (
-                      <Col key={name} xs={Math.floor(12 / this.state.adventurersInParty.length)}>
-                        <Panel>
-                          {name} {' '}
-                          <Button
-                            bsSize='small'
-                            bsStyle='danger'
-                            onClick={() => {this.removeAdventurerFromParty(name)}}
-                          >
-                            <i className='fa fa-times-circle-o'/>
-                          </Button>
-                        </Panel>
-                      </Col>
-                    ))
-                }
-              </Row>
-            </Well>
+            <PartyDisplay canRemove={true} />
           </Col>
         </Row>
         <Row>
@@ -69,7 +30,7 @@ class ManageParty extends React.Component {
                     <AdventurerPanel
                       key={key}
                       adventurer={this.props.adventurers[key]}
-                      fullParty={(this.state.adventurersInParty.length >= 3)}
+                      fullParty={(this.props.partyCount >= 3)}
                     />
                   ))
               }
@@ -98,6 +59,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     adventurers: state.adventurers,
     gear: state.gear,
+    partyCount: Object.keys(state.party).length,
   }
 };
 

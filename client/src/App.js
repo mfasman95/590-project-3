@@ -5,6 +5,7 @@ import './css/App.css';
 import Router from './components/generic/Router';
 import Pages from './components/pages';
 import MainNav from './components/Navbar';
+import { Snackbar } from 'react-redux-snackbar';
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
         <Col xs={10} xsOffset={1}>
           <Router currentPage={this.props.page} pages={Pages} />
         </Col>
+        <Snackbar />
       </div>
     );
   }
