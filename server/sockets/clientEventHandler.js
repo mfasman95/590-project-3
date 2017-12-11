@@ -398,7 +398,11 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
       const { userRowId } = getUser(socket.hash);
 
       return db.getActiveFriend([userRowId])
-        .then(val => reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: val }))(socket))
+        .then((val) => {
+          const friendKeys = Object.keys(val);
+          const friend = friendKeys.length > 0 ? val[friendKeys[0]] : {};
+          reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: friend }))(socket);
+        })
         .catch((err) => {
           errorHandling(err);
           return reduxErrorEmit(rdxErrTypes.getActiveFriend)(socket);
