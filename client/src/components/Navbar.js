@@ -11,17 +11,16 @@ import { emit } from './../scripts/socket';
  * @param props.iconString - The font awesome icon string for this button 
  * @param props.bsStyle - The bsStyle prop to pass to the button. Default to 'primary'. 
  */
-const OverlayNavButton = (props) => (
+const OverlayNavButton = ({ tooltipId, tooltipText, onClick, disabled, iconString, bsStyle }) => (
   <OverlayTrigger
     placement='bottom'
-    overlay={<Tooltip id={`${props.tooltipId}Tooltip`}>{props.tooltipText}</Tooltip>}
+    overlay={<Tooltip id={`${tooltipId}Tooltip`}>{tooltipText}</Tooltip>}
   >
     <Button
-      bsStyle={props.bsStyle || 'primary'}
-      onClick={props.onClick}
-      disabled={props.disabled}
+      bsStyle={(disabled) ? 'success' : bsStyle || 'primary'}
+      onClick={(disabled) ? (() => { if (process.env.NODE_ENV !== 'production') console.log(`Already on ${tooltipText}`)}) : onClick }
     >
-      <i className={`fa ${props.iconString}`}/>
+      <i className={`fa ${iconString}`}/>
     </Button>
   </OverlayTrigger>
 );
