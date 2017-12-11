@@ -394,6 +394,16 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
           return reduxErrorEmit(rdxErrTypes.setActiveFriend)(socket);
         });
     }
+    case 'getActiveFriend': {
+      const { userRowId } = getUser(socket.hash);
+
+      return db.getActiveFriend([userRowId])
+        .then(val => reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: val }))(socket))
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.getActiveFriend)(socket);
+        });
+    }
     default: { return log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }
   }
 };

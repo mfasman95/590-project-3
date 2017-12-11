@@ -72,6 +72,10 @@ module.exports.rdxErrTypes = Object.freeze({
     code: 'activeFriendError',
     message: 'Unexpected Error When Setting Active Friend',
   },
+  getActiveFriend: {
+    code: 'activeFriendError',
+    message: 'Unexpected Error When Getting Active Friend',
+  },
 });
 // #endregion Base Emit Functions
 
