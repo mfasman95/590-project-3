@@ -10,7 +10,6 @@ const panelStyle = {
 class AdventurerPanel extends React.Component {
   render() {
     const {
-      id,
       name,
       race,
       className,
@@ -64,9 +63,8 @@ class AdventurerPanel extends React.Component {
             <ButtonGroup vertical block>
               <Button bsStyle='success' disabled={this.props.fullParty} onClick={
                 () => {
-                  console.log(key);
-                  emit('addToParty', { key, id });
-                  console.log(`Adding ${key}-${id}-${name} to party`);
+                  emit('addToParty', { key });
+                  console.log(`Adding ${key}-${name} to party`);
                 }
               }>Add To Party</Button>
               <Button bsStyle='danger' disabled>Scrap <i className='fa fa-trash'/></Button>

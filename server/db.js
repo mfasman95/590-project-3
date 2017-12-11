@@ -108,8 +108,8 @@ const DBConstants = Object.freeze({
   RECRUIT_EQUIPMENT: 'INSERT INTO `user_cards` (`user`, `card_type`, `card_id`) VALUES (?, 1, ?);',
   GET_ACTIVE: 'SELECT `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ? AND `party` = 1;',
   GET_SUPPORT: 'SELECT `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user` = ? AND `support` = 1;',
-  SET_ACTIVE: 'UPDATE `user_cards` SET `party` = ? WHERE `user` = ? AND `card_id` = ? AND `card_type` = 0;',
-  SET_SUPPORT: 'UPDATE `user_cards` SET `support` = ? WHERE `user` = ? AND `card_id` = ? AND `card_type` = 0;',
+  SET_ACTIVE: 'UPDATE `user_cards` SET `party` = ? WHERE `user` = ? AND `id` = ? AND `card_type` = 0;',
+  SET_SUPPORT: 'UPDATE `user_cards` SET `support` = ? WHERE `user` = ? AND `id` = ? AND `card_type` = 0;',
   GET_ACTIVE_FRIEND: 'SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ? AND `active` = 1;',
 
   GET_CHARACTER: 'SELECT * FROM `adventurer_lookup` WHERE `id` = ?;',

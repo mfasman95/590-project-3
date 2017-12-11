@@ -316,16 +316,20 @@ module.exports.clientEmitHandler = (sock, eventData) => {
         });
     }
     case 'addToParty': {
-      if (!data.id || !data.key) {
+      if (!data.key) {
         return reduxErrorEmit(rdxErrTypes.addPartyMember)(socket);
       }
 
       const { userRowId } = getUser(socket.hash);
 
-      return db.setActive([0, userRowId, data.key])
-        .then(() => db.getCharacter([data.id]))
-        .then((character) => {
-          const char = character;
+      return db.setActive([1, userRowId, data.key])
+        .then(() => db.getActive([userRowId]))
+        .then((activeList) => {
+          const char = activeList[data.key];
+          if (!char) {
+            // Somehow it failed to add yet gave no error?!
+            return reduxErrorEmit(rdxErrTypes.addPartyMember)(socket);
+          }
           char.key = data.key;
 
           return reduxEmit(new Message('UPDATE_PARTY_MEMBER', { partyMember: char }))(socket);
@@ -333,6 +337,20 @@ module.exports.clientEmitHandler = (sock, eventData) => {
         .catch((err) => {
           errorHandling(err);
           return reduxErrorEmit(rdxErrTypes.addPartyMember)(socket);
+        });
+    }
+    case 'removeFromParty': {
+      if (!data.key) {
+        return reduxErrorEmit(rdxErrTypes.removePartyMember)(socket);
+      }
+
+      const { userRowId } = getUser(socket.hash);
+
+      return db.setActive([0, userRowId, data.key])
+        .then(() => reduxEmit(new Message('DELETE_PARTY_MEMBER', { id: data.key }))(socket))
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.removePartyMember)(socket);
         });
     }
     default: { return log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }

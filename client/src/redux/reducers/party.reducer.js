@@ -12,6 +12,7 @@ const actionHandlers = {
     const partyMemberKeys = Object.keys(action.partyMembers);
     for (let i = 0; i < partyMemberKeys.length; i++) {
       rs[partyMemberKeys[i]] = action.partyMembers[partyMemberKeys[i]];
+      rs[partyMemberKeys[i]].key = partyMemberKeys[i];
     }
     return rs;
   },

@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Panel, Col, Well, Row, Button } from 'react-bootstrap';
+import { emit } from './../../scripts/socket';
 
 
 const PartyMember = ({ partyMember, canRemove }) => {
-  const { name, race, className, level, hp, hit, id } = partyMember;
-  
+  const { name, race, className, level, hp, hit, key } = partyMember;
+
   return (
     <Panel>
       <h4><u><b>{name}</b> - {race} {className} - Level {level}</u></h4>
@@ -16,7 +17,7 @@ const PartyMember = ({ partyMember, canRemove }) => {
           <Button
             bsSize='small'
             bsStyle='danger'
-            onClick={() => { console.log(id) }}
+            onClick={() => {  emit('removeFromParty', { key }); }}
           >
             <i className='fa fa-times-circle-o'/>
           </Button>
@@ -29,10 +30,10 @@ class PartyDisplay extends React.Component {
   render() {
     const partyKeys = Object.keys(this.props.party);
 
-    return (  
+    return (
       <Well>
         <Row>
-          { 
+          {
             partyKeys.length <= 0 ?
               // If there are no party members to display
               <h3>Your party is empty</h3> :

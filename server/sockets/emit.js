@@ -60,6 +60,10 @@ module.exports.rdxErrTypes = Object.freeze({
     code: 'addPartyMemberError',
     message: 'Unexpected Error When Adding Party Member',
   },
+  removePartyMember: {
+    code: 'removePartyMemberError',
+    message: 'Unexpected Error When Removing Party Member',
+  },
 });
 // #endregion Base Emit Functions
 
