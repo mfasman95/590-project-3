@@ -9,7 +9,7 @@ const initialState = {
 // Handle actions dispatched to the reducer
 const actionHandlers = {
   INIT: (returnState, action) => {
-    const rs = returnState;
+    const rs = Object.assign({}, initialState);
 
     // Set the initial rooms
     rs.id = action.id;

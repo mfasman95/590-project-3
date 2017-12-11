@@ -6,6 +6,8 @@ const initialState = {};
 // Handle actions dispatched to the reducer
 const actionHandlers = {
   CLEAR_SESSION: () => initialState,
+  INIT: () => initialState,
+
   UPDATE_GEAR: (returnState, action) => {
     const rs = returnState;
 

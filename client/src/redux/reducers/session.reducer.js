@@ -14,6 +14,7 @@ const initialState = {
 const actionHandlers = {
   // Resets the session to the initial state
   CLEAR_SESSION: () => initialState,
+  INIT: () => initialState,
 
   // Temporary stat updating?
   UPDATE_STATS: (returnState, action) => {

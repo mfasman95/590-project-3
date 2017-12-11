@@ -7,6 +7,8 @@ const initialState = {
 
 // Handle actions dispatched to the reducer
 const actionHandlers = {
+  INIT: () => initialState,
+
   CHANGE_PAGE: (returnState, action) => {
     const rs = returnState;
 

@@ -6,6 +6,8 @@ const initialState = {};
 // Handle actions dispatched to the reducer
 const actionHandlers = {
   CLEAR_SESSION: () => initialState,
+  INIT: () => initialState,
+
   UPDATE_PARTY: (returnState, action) => {
     const rs = returnState;
 
@@ -22,7 +24,7 @@ const actionHandlers = {
     rs[action.partyMember.key] = action.partyMember;
     return rs;
   },
-  DELETE_PARTY_MEMEBER: (returnState, action) => {
+  DELETE_PARTY_MEMBER: (returnState, action) => {
     const rs = returnState;
 
     delete rs[action.id];
