@@ -125,9 +125,8 @@ const loginResponse = (socket, res, username) => {
   return changePage('Home', socket);
 };
 
-module.exports.clientEmitHandler = (sock, eventData) => {
+module.exports.clientEmitHandler = (sock, { event, data }) => {
   const socket = sock;
-  const { event, data } = eventData;
 
   switch (event) {
     case 'changePage': {
