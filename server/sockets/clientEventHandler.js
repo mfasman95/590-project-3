@@ -72,6 +72,7 @@ const changePage = (page, socket) => {
     case 'ManageParty': {
       sendList(socket, 'UPDATE_ADVENTURER', 'adventurer', db.partyList, [userRowId]);
       sendList(socket, 'UPDATE_GEAR', 'gear', db.equipList, [userRowId]);
+      sendList(socket, 'SET_SUPPORT', 'support', db.getSupport, [userRowId]);
       break;
     }
     case 'Options': {
@@ -363,8 +364,9 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
         .then((prevSupport) => {
           const prevSupportIds = Object.keys(prevSupport);
           const list = [];
-          for (let i = 0; i < prevSupportIds.length; i++)
+          for (let i = 0; i < prevSupportIds.length; i++) {
             list.push(db.setSupport([0, userRowId, prevSupportIds[i]]));
+          }
           return Promise.all(list);
         })
         .then(() => db.setSupport([1, userRowId, data.key]))
