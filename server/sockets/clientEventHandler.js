@@ -81,6 +81,17 @@ const changePage = (page, socket) => {
       sendList(socket, 'UPDATE_ADVENTURER', 'adventurer', db.partyList, [userRowId]);
       sendList(socket, 'UPDATE_GEAR', 'gear', db.equipList, [userRowId]);
       sendList(socket, 'SET_SUPPORT', 'support', db.getSupport, [userRowId]);
+      sendList(socket, 'SET_ACTIVE_FRIEND', 'activeFriend', db.getActiveFriend, [userRowId]);
+      /*db.getActiveFriend([userRowId])
+        .then((val) => {
+          const friendKeys = Object.keys(val);
+          const friend = friendKeys.length > 0 ? val[friendKeys[0]] : {};
+          reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: friend }))(socket);
+        })
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.getActiveFriend)(socket);
+        });*/
       break;
     }
     case 'Options': {
@@ -392,20 +403,6 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
         .catch((err) => {
           errorHandling(err);
           return reduxErrorEmit(rdxErrTypes.setActiveFriend)(socket);
-        });
-    }
-    case 'getActiveFriend': {
-      const { userRowId } = getUser(socket.hash);
-
-      return db.getActiveFriend([userRowId])
-        .then((val) => {
-          const friendKeys = Object.keys(val);
-          const friend = friendKeys.length > 0 ? val[friendKeys[0]] : {};
-          reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: friend }))(socket);
-        })
-        .catch((err) => {
-          errorHandling(err);
-          return reduxErrorEmit(rdxErrTypes.getActiveFriend)(socket);
         });
     }
     default: { return log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }
