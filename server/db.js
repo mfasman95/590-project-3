@@ -174,7 +174,7 @@ module.exports.setStamina = query(DBConstants.SET_STAMINA, emptyObject);
 module.exports.partyList = query(DBConstants.GET_PARTY, convertList('uuid', 'entity_id', module.exports.getCharacter));
 // [user_id] -> [(uuid, equip_id)...] -> {uuid: {<equip_vals>}, ...}
 module.exports.equipList = query(DBConstants.GET_EQUIP, convertList('uuid', 'equip_id', module.exports.getEquipment));
-// [user_id] -> [user_id...] -> {id: {id, name}, ...}
+// [user_id] -> [user_id...] -> {id: {id, name, support: <entity_vals>}, ...}
 module.exports.friendList = query(DBConstants.GET_FRIENDS, convertList('id', 'user_id', async (val) => {
   const theUser = module.exports.getUser([val]);
   theUser.support = await module.exports.getSupport([theUser.id]);
