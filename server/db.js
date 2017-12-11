@@ -175,7 +175,11 @@ module.exports.partyList = query(DBConstants.GET_PARTY, convertList('uuid', 'ent
 // [user_id] -> [(uuid, equip_id)...] -> {uuid: {<equip_vals>}, ...}
 module.exports.equipList = query(DBConstants.GET_EQUIP, convertList('uuid', 'equip_id', module.exports.getEquipment));
 // [user_id] -> [user_id...] -> {id: {id, name}, ...}
-module.exports.friendList = query(DBConstants.GET_FRIENDS, convertList('id', 'user_id', module.exports.getUser));
+module.exports.friendList = query(DBConstants.GET_FRIENDS, convertList('id', 'user_id', async (val) => {
+  const theUser = module.exports.getUser([val]);
+  theUser.support = await module.exports.getSupport([theUser.id]);
+  return theUser;
+}));
 // [user_id, user_id] -> [] -> {}
 module.exports.addFriend = arr => // Passes in the same arg twice so a -> b is also b -> a
   query(DBConstants.ADD_FRIEND, emptyObject)([arr[0], arr[1], arr[1], arr[0]]);
