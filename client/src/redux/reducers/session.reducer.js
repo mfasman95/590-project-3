@@ -20,10 +20,11 @@ const actionHandlers = {
   UPDATE_STATS: (returnState, action) => {
     const rs = returnState;
 
-    rs.level = action.lvl;
-    rs.experience = action.xp;
-    rs.gold = action.currency;
-    rs.currentStamina = action.stamina;
+    // Update the stat if provided, otherwise use the old value
+    rs.level = action.lvl || rs.lvl;
+    rs.experience = action.xp || rs.xp;
+    rs.gold = action.currency || rs.gold;
+    rs.currentStamina = action.stamina || rs.currentStamina;
     return rs;
   },
   UPDATE_LEVEL: (returnState, action) => {

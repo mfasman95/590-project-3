@@ -64,6 +64,10 @@ module.exports.rdxErrTypes = Object.freeze({
     code: 'removePartyMemberError',
     message: 'Unexpected Error When Removing Party Member',
   },
+  setSupport: {
+    code: 'setSupportError',
+    message: 'Unexpected Error When Setting Support',
+  },
 });
 // #endregion Base Emit Functions
 

@@ -26,11 +26,12 @@ class ManageParty extends React.Component {
                   // Render the no adventurers result
                   <h3>You do not have adventurers yet</h3> :
                   // Render the adventurers list
-                  adventurerKeys.map((key) => (
+                  adventurerKeys.map(key => (
                     <AdventurerPanel
                       key={key}
                       adventurer={this.props.adventurers[key]}
-                      fullParty={(this.props.partyCount >= 3)}
+                      party={(this.props.party)}
+                      mySupport={this.props.mySupport}
                     />
                   ))
               }
@@ -59,7 +60,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     adventurers: state.adventurers,
     gear: state.gear,
-    partyCount: Object.keys(state.party).length,
+    party: state.party,
+    mySupport: state.friends.support,
   }
 };
 

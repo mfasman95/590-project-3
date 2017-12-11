@@ -20,6 +20,12 @@ const actionHandlers = {
     delete rs[action.id];
     return rs;
   },
+  SET_SUPPORT: (returnState, action) => {
+    const rs = returnState;
+
+    rs.support = action.key;
+    return rs;
+  },
 };
 
 // Export the reducer

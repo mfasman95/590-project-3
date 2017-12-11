@@ -23,8 +23,23 @@ class AdventurerPanel extends React.Component {
       hp,
       hit,
       key,
+      id,
     } = this.props.adventurer;
     
+    let disableAddToParty = false;
+    const partyKeys = Object.keys(this.props.party);
+    if (partyKeys.length >= 3) disableAddToParty = false;
+    for (let i = 0; i < partyKeys.length; i++) {
+      const partyMember = this.props.party[partyKeys[i]];
+      // Cannot add the same instance to my party twice
+      if (key === partyMember.key) disableAddToParty = true;
+      // Cannot add the same stat block to my party twice
+      if (id === partyMember.id) disableAddToParty = true;
+    }
+
+    // If this user is marked as support, cannot mark them again
+    let disableMarkAsSupport = (key === this.props.mySupport);
+
     return (  
       <Panel style={panelStyle}>
         <Row>
@@ -61,13 +76,26 @@ class AdventurerPanel extends React.Component {
           </Col>
           <Col xs={12} md={3} lg={12}>
             <ButtonGroup vertical block>
-              <Button bsStyle='success' disabled={this.props.fullParty} onClick={
-                () => {
-                  emit('addToParty', { key });
-                  console.log(`Adding ${key}-${name} to party`);
-                }
-              }>Add To Party</Button>
-              <Button bsStyle='danger' disabled>Scrap <i className='fa fa-trash'/></Button>
+              <Button
+                bsStyle='success'
+                disabled={disableAddToParty}
+                onClick={() => { emit('addToParty', { key }) }}
+              >
+                Add To Party
+              </Button>
+              <Button
+                bsStyle='info'
+                disabled={disableMarkAsSupport}
+                onClick={() => { emit('setSupport', { key }) }}
+              >
+                Share This Adventurer With Friends
+              </Button>
+              <Button
+                bsStyle='danger'
+                disabled
+              >
+                Scrap <i className='fa fa-trash'/>
+              </Button>
             </ButtonGroup>
           </Col>
         </Row>

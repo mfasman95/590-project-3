@@ -353,6 +353,20 @@ module.exports.clientEmitHandler = (sock, eventData) => {
           return reduxErrorEmit(rdxErrTypes.removePartyMember)(socket);
         });
     }
+    case 'setSupport': {
+      if (!data.key) {
+        return reduxErrorEmit(rdxErrTypes.setSupport)(socket);
+      }
+
+      const { userRowId } = getUser(socket.hash);
+
+      return db.setSupport([1, userRowId, data.key])
+        .then(() => reduxEmit(new Message('SET_SUPPORT', { key: data.key }))(socket))
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.setSupport)(socket);
+        });
+    }
     default: { return log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }
   }
 };
