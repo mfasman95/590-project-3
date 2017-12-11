@@ -111,6 +111,7 @@ const DBConstants = Object.freeze({
   SET_ACTIVE: 'UPDATE `user_cards` SET `party` = ? WHERE `user` = ? AND `id` = ? AND `card_type` = 0;',
   SET_SUPPORT: 'UPDATE `user_cards` SET `support` = ? WHERE `user` = ? AND `id` = ? AND `card_type` = 0;',
   GET_ACTIVE_FRIEND: 'SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ? AND `active` = 1;',
+  SET_ACTIVE_FRIEND: 'UPDATE `friend_list` SET `active` = ? WHERE `user` = ? AND `friend` = ?;',
 
   GET_CHARACTER: 'SELECT * FROM `adventurer_lookup` WHERE `id` = ?;',
   GET_EQUIPMENT: 'SELECT * FROM `equipment` WHERE `id` = ?;',
@@ -197,3 +198,5 @@ module.exports.setActive = query(DBConstants.SET_ACTIVE, emptyObject);
 module.exports.setSupport = query(DBConstants.SET_SUPPORT, emptyObject);
 // [user_id] -> [user_id] -> {user_id: {<entity_vals>}}
 module.exports.getActiveFriend = query(DBConstants.GET_ACTIVE_FRIEND, convertList('user_id', 'user_id', module.exports.getSupport));
+// [update, user_id, friend_id] -> [] -> {}
+module.exports.setSupport = query(DBConstants.SET_ACTIVE_FRIEND, emptyObject);
