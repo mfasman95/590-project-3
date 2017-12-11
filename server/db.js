@@ -199,4 +199,4 @@ module.exports.setSupport = query(DBConstants.SET_SUPPORT, emptyObject);
 // [user_id] -> [user_id] -> {user_id: {<entity_vals>}}
 module.exports.getActiveFriend = query(DBConstants.GET_ACTIVE_FRIEND, convertList('user_id', 'user_id', module.exports.getSupport));
 // [update, user_id, friend_id] -> [] -> {}
-module.exports.setSupport = query(DBConstants.SET_ACTIVE_FRIEND, emptyObject);
+module.exports.setActiveFriend = query(DBConstants.SET_ACTIVE_FRIEND, emptyObject);
