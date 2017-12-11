@@ -361,7 +361,11 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
 
       return db.getSupport([userRowId])
         .then((prevSupport) => {
-          if (Object.keys(prevSupport).length > 0) db.setSupport([0, userRowId, prevSupport.id])
+          const prevSupportIds = Object.keys(prevSupport);
+          const list = [];
+          for (let i = 0; i < prevSupportIds.length; i++)
+            list.push(db.setSupport([0, userRowId, prevSupportIds[i]]));
+          return Promise.all(list);
         })
         .then(() => db.setSupport([1, userRowId, data.key]))
         .then(() => reduxEmit(new Message('SET_SUPPORT', { key: data.key }))(socket))
