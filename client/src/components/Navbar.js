@@ -18,7 +18,7 @@ const OverlayNavButton = ({ tooltipId, tooltipText, onClick, disabled, iconStrin
   >
     <Button
       bsStyle={(disabled) ? 'success' : bsStyle || 'primary'}
-      onClick={(disabled) ? (() => { if (process.env.NODE_ENV !== 'production') console.log(`Already on ${tooltipText}`)}) : onClick }
+      onClick={(disabled) ? () => {} : onClick }
     >
       <i className={`fa ${iconString}`}/>
     </Button>
