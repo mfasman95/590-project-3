@@ -68,6 +68,10 @@ module.exports.rdxErrTypes = Object.freeze({
     code: 'setSupportError',
     message: 'Unexpected Error When Setting Support',
   },
+  setActiveFriend: {
+    code: 'activeFriendError',
+    message: 'Unexpected Error When Setting Active Friend',
+  },
 });
 // #endregion Base Emit Functions
 

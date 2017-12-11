@@ -34,6 +34,14 @@ const sendList = (socket, string, key, method, params) => sendHelper(method, par
 const sendObj = (socket, string, method, params) => sendHelper(method, params, (val) => {
   reduxEmit(new Message(string, val))(socket);
 });
+const promiseAllKeys = (val, userid, method) => (theObject) => {
+  const objectKeys = Object.keys(theObject);
+  const list = [];
+  for (let i = 0; i < objectKeys.length; i++) {
+    list.push(method([val, userid, objectKeys[i]]));
+  }
+  return Promise.all(list);
+};
 
 const changePage = (page, socket) => {
   const { userRowId } = getUser(socket.hash);
@@ -361,19 +369,29 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
       const { userRowId } = getUser(socket.hash);
 
       return db.getSupport([userRowId])
-        .then((prevSupport) => {
-          const prevSupportIds = Object.keys(prevSupport);
-          const list = [];
-          for (let i = 0; i < prevSupportIds.length; i++) {
-            list.push(db.setSupport([0, userRowId, prevSupportIds[i]]));
-          }
-          return Promise.all(list);
-        })
+        .then(promiseAllKeys(0, userRowId, db.setSupport))
         .then(() => db.setSupport([1, userRowId, data.key]))
         .then(() => reduxEmit(new Message('SET_SUPPORT', { key: data.key }))(socket))
         .catch((err) => {
           errorHandling(err);
           return reduxErrorEmit(rdxErrTypes.setSupport)(socket);
+        });
+    }
+    case 'setActiveFriend': {
+      if (!data.id) {
+        return reduxErrorEmit(rdxErrTypes.setActiveFriend)(socket);
+      }
+
+      const { userRowId } = getUser(socket.hash);
+
+      return db.getActiveFriend([userRowId])
+        .then(promiseAllKeys(0, userRowId, db.setActiveFriend))
+        .then(() => db.setActiveFriend([1, userRowId, data.id]))
+        .then(() => db.getActiveFriend([userRowId]))
+        .then((val) => reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: val }))(socket))
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.setActiveFriend)(socket);
         });
     }
     default: { return log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }
