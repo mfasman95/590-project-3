@@ -6,7 +6,7 @@ import AddFriend from './../custom/AddFriend';
 
 class Friends extends React.Component {
   render() {
-    const friendKeys = Object.keys(this.props.friends);
+    const friendKeys = Object.keys(this.props.friends || {});
     return (
       <div>
         <PageHeader>Friends Page</PageHeader>
