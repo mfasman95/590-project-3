@@ -44,7 +44,8 @@ const promiseAllKeys = (val, userid, method) => (theObject) => {
 };
 
 const changePage = (page, socket) => {
-  const { userRowId } = getUser(socket.hash);
+  const user = getUser(socket.hash);
+  const { userRowId } = user;
   sendObj(socket, 'UPDATE_STATS', db.getUserData, [userRowId]);
 
   switch (page) {
@@ -115,7 +116,10 @@ const changePage = (page, socket) => {
 
           return db.createEncounter([averageLevel, partySize]);
         })
-        .then(enemies => reduxEmit(new Message('UPDATE_GAME_STATE', { enemies, heroes }))(socket))
+        .then((enemies) => {
+          const encounterData = user.setEncounter(enemies);
+          return reduxEmit(new Message('UPDATE_GAME_STATE', { enemies, heroes, encounterData }))(socket);
+        })
         .catch((err) => {
           errorHandling(err);
           reduxErrorEmit(rdxErrTypes.startAdventure)(socket);

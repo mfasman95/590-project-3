@@ -14,6 +14,7 @@ const actionHandlers = {
 
     rs.heroes = action.heroes;
     rs.enemies = action.enemies;
+    rs.encounterData = action.encounterData;
     return rs;
   },
   CLEAR_GAME_STATE: () => initialState,
