@@ -1,7 +1,10 @@
 import extend from 'extend';
 
 // Set initial application state
-const initialState = {};
+const initialState = {
+  myParty: {},
+  activeFriend: {},
+};
 
 // Handle actions dispatched to the reducer
 const actionHandlers = {
@@ -13,21 +16,29 @@ const actionHandlers = {
 
     const partyMemberKeys = Object.keys(action.partyMembers);
     for (let i = 0; i < partyMemberKeys.length; i++) {
-      rs[partyMemberKeys[i]] = action.partyMembers[partyMemberKeys[i]];
-      rs[partyMemberKeys[i]].key = partyMemberKeys[i];
+      rs.myParty[partyMemberKeys[i]] = action.partyMembers[partyMemberKeys[i]];
+      rs.myParty[partyMemberKeys[i]].key = partyMemberKeys[i];
     }
     return rs;
   },
   UPDATE_PARTY_MEMBER: (returnState, action) => {
     const rs = returnState;
 
-    rs[action.partyMember.key] = action.partyMember;
+    rs.myParty[action.partyMember.key] = action.partyMember;
     return rs;
   },
   DELETE_PARTY_MEMBER: (returnState, action) => {
     const rs = returnState;
 
-    delete rs[action.id];
+    delete rs.myParty[action.id];
+    return rs;
+  },
+  SET_ACTIVE_FRIEND: (returnState, action) => {
+    const rs = returnState;
+
+    const activeFriendKey = Object.keys(action.activeFriend)[0];
+    rs.activeFriend = action.activeFriend[activeFriendKey];
+    rs.activeFriend.key = parseInt(activeFriendKey, 10);
     return rs;
   },
 };
