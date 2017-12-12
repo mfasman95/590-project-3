@@ -21,7 +21,10 @@ class Friends extends React.Component {
                 // Render the no friends result
                 <h3>You have yet to add any friends!</h3> :
                 // Render the friends list
-                friendKeys.map((key) => <FriendPanel key={key} friend={this.props.friends[key]}/>)
+                friendKeys.map((key) => {
+                  if (key === 'support') return <div/>
+                  return <FriendPanel key={key} friend={this.props.friends[key]}/>
+                })
             }
             </Well>
           </Col>
