@@ -23,7 +23,7 @@ const actionHandlers = {
   SET_SUPPORT: (returnState, action) => {
     const rs = returnState;
 
-    rs.support = action.support.key;
+    rs.support = action.key;
     return rs;
   },
 };
