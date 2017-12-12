@@ -5,24 +5,31 @@ import { emit } from './../../scripts/socket';
 class FriendPanel extends React.Component {
   render() {
     const { name, support, id } = this.props.friend;
-    const supportObj = support[Object.keys(support)[0]]
-    const { race, className, level, hp, hit } = supportObj;
-    const charName = supportObj.name;
+    let supportObj;
+    if (support) {
+      supportObj = support[Object.keys(support)[0]];
+    }
     return (
       <Panel>
         <Row>
           <Col xs={4} lg={3}>
             <h4>{name}</h4>
           </Col>
-          <Col xs={8} lg={6}>
-            <Row>
-              <h4><u><b>{charName}</b> - {race} {className} - Level {level}</u></h4>
-            </Row>
-            <Row>
-              <Col xs={6}><h4>Health: {hp}</h4></Col>
-              <Col xs={6}><h4>Attack: {hit}</h4></Col>
-            </Row>
-          </Col>
+          {
+            support ?
+              <Col xs={8} lg={6}>
+                <Row>
+                  <h4><u><b>{supportObj.name}</b> - {supportObj.race} {supportObj.className} - Level {supportObj.level}</u></h4>
+                </Row>
+                <Row>
+                  <Col xs={6}><h4>Health: {supportObj.hp}</h4></Col>
+                  <Col xs={6}><h4>Attack: {supportObj.hit}</h4></Col>
+                </Row>
+              </Col>:
+              <Col xs={8} lg={6}>
+                <Row>This User Does Not Have A Support</Row>
+              </Col>
+          }
           <Col xs={12} lg={3}>
             <Button
               bsStyle='info'
