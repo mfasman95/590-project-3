@@ -112,6 +112,8 @@ const DBConstants = Object.freeze({
   SET_SUPPORT: 'UPDATE `user_cards` SET `support` = ? WHERE `user` = ? AND `id` = ? AND `card_type` = 0;',
   GET_ACTIVE_FRIEND: 'SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ? AND `active` = 1;',
   SET_ACTIVE_FRIEND: 'UPDATE `friend_list` SET `active` = ? WHERE `user` = ? AND `friend` = ?;',
+  GET_ACTIVE_LIST: 'SELECT `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 AND `user`' +
+   'IN ((SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ? AND `active` = 1), ?) AND `party` = 1;',
 
   GET_CHARACTER: 'SELECT * FROM `adventurer_lookup` WHERE `id` = ?;',
   GET_EQUIPMENT: 'SELECT * FROM `equipment` WHERE `id` = ?;',
@@ -169,7 +171,7 @@ module.exports.setExperience = query(DBConstants.SET_EXPERIENCE, emptyObject);
 // [user_id, newVal] -> [] -> {}
 module.exports.setStamina = query(DBConstants.SET_STAMINA, emptyObject);
 
-/* User data */
+/* Lists of Things */
 
 // [user_id] -> [(uuid, entity_id)...] -> {uuid: {<entity_vals>}, ...}
 module.exports.partyList = query(DBConstants.GET_PARTY, convertList('uuid', 'entity_id', module.exports.getCharacter));
@@ -181,6 +183,12 @@ module.exports.friendList = query(DBConstants.GET_FRIENDS, convertList('id', 'us
   theUser.support = await module.exports.getSupport([theUser.id]);
   return theUser;
 }));
+// [user_id] -> [(uuid, entity_id)...] -> {uuid: {<entity_vals>}, ...}
+module.exports.activeList = arr =>
+  query(DBConstants.GET_ACTIVE_LIST, convertList('uuid', 'entity_id', module.exports.getCharacter))([arr[0], arr[0]]);
+
+/* User data */
+
 // [user_id, user_id] -> [] -> {}
 module.exports.addFriend = arr => // Passes in the same arg twice so a -> b is also b -> a
   query(DBConstants.ADD_FRIEND, emptyObject)([arr[0], arr[1], arr[1], arr[0]]);
