@@ -30,8 +30,6 @@ class PartyDisplay extends React.Component {
   render() {
     const myPartyKeys = Object.keys(this.props.party.myParty);
 
-    console.log(this.props.party);
-
     return (
       <Well>
         <Row>

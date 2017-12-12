@@ -31,7 +31,7 @@ module.exports = Object.freeze({
       for (let i = 0; i < enemyKeys.length; i++) {
         const enemy = enemies[enemyKeys[i]];
         enemyString = `${enemyString}${JSON.stringify(enemy)}`;
-        encounterExperience += (enemy.challengeRating * 10);
+        encounterExperience += (enemy.challenge * 10);
       }
       const encounterGold = Math.floor(encounterExperience * 0.5);
 

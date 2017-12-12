@@ -116,10 +116,11 @@ const changePage = (page, socket) => {
 
           return db.createEncounter([averageLevel, partySize]);
         })
-        .then((enemies) => {
-          const encounterData = user.setEncounter(enemies);
-          return reduxEmit(new Message('UPDATE_GAME_STATE', { enemies, heroes, encounterData }))(socket);
-        })
+        .then(enemies => reduxEmit(new Message('UPDATE_GAME_STATE', {
+          enemies,
+          heroes,
+          encounterData: user.setEncounter(enemies),
+        }))(socket))
         .catch((err) => {
           errorHandling(err);
           reduxErrorEmit(rdxErrTypes.startAdventure)(socket);
@@ -234,43 +235,65 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
     }
     case 'adventureEnd': {
       // Check parameters
-      if (!data.success || !data.friendId || !data.encounter) {
+      if (!data.success || !data.friendId || !data.encounterId) {
         return reduxErrorEmit({
           code: 'MissingParams',
           message: 'Success, Friend ID, and Encounter Token is required.',
         })(socket);
       }
+
+      // Validate data
+      const success = (data.success === true);
+      const friendId = parseInt(data.friendId, 10);
+      const sentEncounterId = `${data.encounterId}`;
+
       // Test the user encounter token
-      const user = getUser(socket.hash);
-      if (data.encounter !== user.encounter) {
+      const { encounter, userRowId } = getUser(socket.hash);
+      const { encounterId, encounterGold, encounterExperience } = encounter;
+
+      if (sentEncounterId !== encounterId) {
         return reduxErrorEmit({
           code: 'ErrorParams',
           message: 'Invalid Encounter Token!',
         })(socket);
       }
-      const friend = getUserByDBID(data.friendId);
-      const gainedXP = data.success ? 20 : 10; // TODO: Temp numbers
-      let newXP;
-      // Get their current XP value
-      db.getUserData([data.friendId])
-        .then((val) => {
-          // Add their gained support XP to it
-          newXP = val.xp + gainedXP;
-          // Update it in the database
-          return db.setExperience([newXP, data.friendId]);
-        })
-        .then(() => {
-          // If the friend is online
-          if (friend) {
-            // Send the new XP value to them
-            reduxEmit(new Message('UPDATE_EXPERIENCE', { xp: newXP }))(friend.socket);
-          } // Otherwise store it for later?
-          // TODO: Store it for later
-        })
-        .catch((err) => {
-          errorHandling(err);
-          return reduxErrorEmit(rdxErrTypes.adventureEnd)(socket);
-        });
+
+      if (success) {
+        db.getUserData([userRowId])
+          .then(({ xp, currency }) => {
+            const newUserXpPromise = db.setExperience([xp + encounterExperience, userRowId]);
+            const newUserCurrencyPromise = db.setCurrency([currency + encounterGold, userRowId]);
+            return Promise.all([newUserXpPromise, newUserCurrencyPromise]);
+          })
+          .then(() => db.getUserData([friendId]))
+          .then(({ xp }) => {
+            const xpGained = Math.floor(encounterExperience * 0.25)
+            const newFriendXp = xp + xpGained;
+            const friend = getUserByDBID(friendId);
+            console.log(friend);
+            if (friend) {
+              reduxEmit(new Message('UPDATE_EXPERIENCE', { xp: newFriendXp }))(friend.socket);
+              reduxEmit(new Message('RRS_SHOW_SNACK', {
+                payload: {
+                  id: 'friendXPSnack',
+                  data: {
+                    label: `You have gained ${xpGained} experience from a friend's encounter!`,
+                    timeout: 10000,
+                    button: { label: 'x' },
+                  },
+                },
+              }));
+            } else {
+              // TODO: Store this message for later?
+            }
+            return db.setExperience([newFriendXp, friendId]);
+          })
+          .then(() => sendObj(socket, 'UPDATE_STATS', db.getUserData, [userRowId]))
+          .catch((err) => {
+            errorHandling(err);
+            return reduxErrorEmit(rdxErrTypes.adventureEnd)(socket);
+          });
+      }
 
       // Redirect to the homepage, etc.
       reduxEmit(new Message('ADVENTURE_END'))(socket);
@@ -397,7 +420,7 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
         .then(promiseAllKeys(0, userRowId, db.setActiveFriend))
         .then(() => db.setActiveFriend([1, userRowId, data.id]))
         .then(() => db.getActiveFriend([userRowId]))
-        .then(val => reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: val[data.id] }))(socket))
+        .then(val => reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: val[data.id], owner: data.id }))(socket))
         .catch((err) => {
           errorHandling(err);
           return reduxErrorEmit(rdxErrTypes.setActiveFriend)(socket);
