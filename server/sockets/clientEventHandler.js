@@ -357,7 +357,7 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
       return db.rollGatcha([userRowId, gatchaTypes[type]])
         // Returns an adventurer in full data for your display pleasure
         // TODO: Actually display said returned entity
-        .then(() => null)
+        .then(() => sendObj(socket, 'UPDATE_STATS', db.getUserData, [userRowId]))
         .catch((err) => {
           errorHandling(err);
           return reduxErrorEmit(rdxErrTypes.rollGatcha)(socket);
