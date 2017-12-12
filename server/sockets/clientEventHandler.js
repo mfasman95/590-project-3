@@ -250,7 +250,7 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
           // Add their gained support XP to it
           newXP = val.xp + gainedXP;
           // Update it in the database
-          return db.setExperience([data.friendId, newXP]);
+          return db.setExperience([newXP, data.friendId]);
         })
         .then(() => {
           // If the friend is online
@@ -394,6 +394,26 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
         .catch((err) => {
           errorHandling(err);
           return reduxErrorEmit(rdxErrTypes.setActiveFriend)(socket);
+        });
+    }
+    case 'gibMoney': {
+      if (!data.money) {
+        return reduxErrorEmit(rdxErrTypes.userData)(socket);
+      }
+
+      const { userRowId } = getUser(socket.hash);
+
+      // The most l33t of hax right here
+      let newCurrency;
+      return db.getUserData([userRowId])
+        .then((val) => {
+          newCurrency = val.currency + data.money;
+          return db.setCurrency([newCurrency, userRowId]);
+        })
+        .then(() => reduxEmit(new Message('UPDATE_GOLD', { currency: newCurrency }))(socket))
+        .catch((err) => {
+          errorHandling(err);
+          return reduxErrorEmit(rdxErrTypes.userData)(socket);
         });
     }
     default: { return log(chalk.bold.yellow(`Emit ${event} received from ${socket.hash} without a handler`)); }

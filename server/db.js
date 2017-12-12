@@ -112,8 +112,8 @@ const DBConstants = Object.freeze({
   SET_SUPPORT: 'UPDATE `user_cards` SET `support` = ? WHERE `user` = ? AND `id` = ? AND `card_type` = 0;',
   GET_ACTIVE_FRIEND: 'SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ? AND `active` = 1;',
   SET_ACTIVE_FRIEND: 'UPDATE `friend_list` SET `active` = ? WHERE `user` = ? AND `friend` = ?;',
-  GET_ACTIVE_LIST: 'SELECT  `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0' +
-  'AND ((`user` = ? AND `party` = 1) OR (`user` = (SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ? AND `active` = 1) AND `support` = 1));',
+  GET_ACTIVE_LIST: 'SELECT  `id` AS uuid, `card_id` AS entity_id FROM `user_cards` WHERE `card_type` = 0 ' +
+    'AND ((`user` = ? AND `party` = 1) OR (`user` = (SELECT `friend` AS user_id FROM `friend_list` WHERE `user` = ? AND `active` = 1) AND `support` = 1))',
 
   GET_CHARACTER: 'SELECT * FROM `adventurer_lookup` WHERE `id` = ?;',
   GET_EQUIPMENT: 'SELECT * FROM `equipment` WHERE `id` = ?;',
@@ -162,13 +162,13 @@ module.exports.getUser = query(DBConstants.GET_USER, firstRow);
 module.exports.getUserByName = query(DBConstants.GET_USER_BY_NAME, firstRow);
 // [user_id] -> [user_id, currency, level, experience, stamina] -> {id, currency, lvl, xp, stamina}
 module.exports.getUserData = query(DBConstants.GET_USER_DATA, firstRow);
-// [user_id, newVal] -> [] -> {}
+// [newVal, user_id] -> [] -> {}
 module.exports.setCurrency = query(DBConstants.SET_CURRENCY, emptyObject);
-// [user_id, newVal] -> [] -> {}
+// [newVal, user_id] -> [] -> {}
 module.exports.setLevel = query(DBConstants.SET_LEVEL, emptyObject);
-// [user_id, newVal] -> [] -> {}
+// [newVal, user_id] -> [] -> {}
 module.exports.setExperience = query(DBConstants.SET_EXPERIENCE, emptyObject);
-// [user_id, newVal] -> [] -> {}
+// [newVal, user_id] -> [] -> {}
 module.exports.setStamina = query(DBConstants.SET_STAMINA, emptyObject);
 
 /* Lists of Things */

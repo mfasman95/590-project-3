@@ -76,6 +76,10 @@ module.exports.rdxErrTypes = Object.freeze({
     code: 'activeFriendError',
     message: 'Unexpected Error When Getting Active Friend',
   },
+  userData: {
+    code: 'userDataError',
+    message: 'Unexpected Error When Updating User Data',
+  },
 });
 // #endregion Base Emit Functions
 
