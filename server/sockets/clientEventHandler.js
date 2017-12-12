@@ -42,6 +42,16 @@ const promiseAllKeys = (val, userid, method) => (theObject) => {
   }
   return Promise.all(list);
 };
+const convertFriend = (friend) => {
+  const ownerKey = Object.keys(friend)[0];
+  const cardKey = Object.keys(friend[ownerKey])[0];
+  const sharedAdventurer = friend[ownerKey][cardKey];
+
+  sharedAdventurer.owner = ownerKey;
+  sharedAdventurer.key = cardKey;
+
+  return sharedAdventurer;
+};
 
 const changePage = (page, socket) => {
   const user = getUser(socket.hash);
