@@ -98,24 +98,27 @@ const changePage = (page, socket) => {
       break;
     }
     case 'Adventure': {
-      db.startEncounter([userRowId])
-        .then((res) => {
-          const { enemies } = res;
+      let heroes = {};
+      db.activeList([userRowId])
+        .then((party) => {
+          heroes = party;
 
-          const encounter = getUser(socket.hash).startEncounter(enemies);
+          let totalLevel = 0;
+          const partyKeys = Object.keys(party);
+          const partySize = partyKeys.length;
+          for (let i = 0; i < partySize; i++) {
+            const partyMember = party[partyKeys[i]];
+            totalLevel += partyMember.level;
+          }
 
-          return reduxEmit(new Message('UPDATE_GAME_STATE', {
-            gameState: {
-              enemies,
-              party: {/* This needs to be retrieved from the DB, should be 3 adventurers */},
-              ally: 'Select the ally that this user has designated from their friends list',
-              encounterId: encounter.id,
-            },
-          }));
+          const averageLevel = Math.floor(totalLevel / partySize);
+
+          return db.createEncounter([averageLevel, partySize]);
         })
+        .then(enemies => reduxEmit(new Message('UPDATE_GAME_STATE', { enemies, heroes }))(socket))
         .catch((err) => {
           errorHandling(err);
-          return reduxErrorEmit(rdxErrTypes.updateGameState)(socket);
+          reduxErrorEmit(rdxErrTypes.startAdventure)(socket);
         });
       break;
     }

@@ -1,15 +1,19 @@
 import extend from 'extend';
 
 // Set initial application state
-const initialState = {};
+const initialState = {
+  heroes: {},
+  enemies: {},
+};
 
 // Handle actions dispatched to the reducer
 const actionHandlers = {
   CLEAR_SESSION: () => initialState,
   UPDATE_GAME_STATE: (returnState, action) => {
-    let rs = returnState;
+    const rs = returnState;
 
-    rs = action.gameState;
+    rs.heroes = action.heroes;
+    rs.enemies = action.enemies;
     return rs;
   },
   CLEAR_GAME_STATE: () => initialState,

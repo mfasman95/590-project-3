@@ -80,6 +80,10 @@ module.exports.rdxErrTypes = Object.freeze({
     code: 'userDataError',
     message: 'Unexpected Error When Updating User Data',
   },
+  startAdventure: {
+    code: 'startAdventureError',
+    message: 'Unexpected Error When Starting Adventure',
+  },
 });
 // #endregion Base Emit Functions
 

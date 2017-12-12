@@ -41,7 +41,7 @@ const actionHandlers = {
   },
   UPDATE_GOLD: (returnState, action) => {
     const rs = returnState;
-    console.log(action);
+
     rs.gold = action.currency;
     return rs;
   },
