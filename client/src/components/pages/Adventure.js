@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, PageHeader } from 'react-bootstrap';
+import { Button, PageHeader, Well, Col, Row } from 'react-bootstrap';
 import { emit } from '../../scripts/socket';
+import AdventurerCombatCard from './../custom/AdventurerCombatCard';
+import EnemyCombatCard from './../custom/EnemyCombatCard';
 
 class Adventure extends React.Component {
   constructor(props, context) {
@@ -16,26 +18,47 @@ class Adventure extends React.Component {
 
   render() {
     const { heroes, enemies, encounterData } = this.props.gameState;
+    const heroKeys = Object.keys(heroes || {});
+    const enemyKeys = Object.keys(enemies || {});
     return (
       <div>
         <PageHeader>Gameplay Screen</PageHeader>
-        <p>{JSON.stringify(heroes)}</p>
+        <Well>
+          <Row>
+            {
+              enemyKeys.map((key) => (
+                <Col xs={Math.floor(12 / enemyKeys.length)} key={key}>
+                  <EnemyCombatCard enemy={enemies[key]} />
+                </Col>
+              ))
+            }
+          </Row>
+        </Well>
         <hr/>
-        <p>{JSON.stringify(enemies)}</p>
-        <hr/>
-        <p>{JSON.stringify(encounterData)}</p>
-        <hr/>
+        <Well>
+          <Row>
+            {
+              heroKeys.map((key) => (
+                <Col xs={Math.floor(12 / heroKeys.length)} key={key}>
+                  <AdventurerCombatCard adventurer={heroes[key]} />
+                </Col>
+              ))
+            }
+          </Row>
+        </Well>
         <Button
-          bsStyle='info'
+          bsStyle='success'
+          bsSize='large'
           onClick={()=>this.adventureEnd(true, this.props.friendKey, encounterData.encounterId)}
         >
-          Success!
+          Win Combat
         </Button>
         <Button
           bsStyle='danger'
+          bsSize='large'
           onClick={()=>this.adventureEnd(false, this.props.friendKey, encounterData.encounterId)}
         >
-          Failure!!!
+          Lose Combat
         </Button>
       </div>
     );
