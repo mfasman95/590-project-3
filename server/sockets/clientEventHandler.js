@@ -56,7 +56,7 @@ const convertFriend = (friend) => {
 const changePage = (page, socket) => {
   const user = getUser(socket.hash);
   const { userRowId } = user;
-  sendObj(socket, 'UPDATE_STATS', db.getUserData, [userRowId]);
+  if (userRowId) sendObj(socket, 'UPDATE_STATS', db.getUserData, [userRowId]);
 
   switch (page) {
     case 'Login': {
