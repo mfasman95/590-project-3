@@ -36,9 +36,7 @@ const actionHandlers = {
   SET_ACTIVE_FRIEND: (returnState, action) => {
     const rs = returnState;
 
-    const activeFriendKey = Object.keys(action.activeFriend)[0];
-    rs.activeFriend = action.activeFriend[activeFriendKey];
-    rs.activeFriend.key = parseInt(activeFriendKey, 10);
+    rs.activeFriend = action.activeFriend;
     return rs;
   },
 };

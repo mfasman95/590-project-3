@@ -25,7 +25,6 @@ const actionHandlers = {
     rs.experience = action.xp || rs.xp;
     rs.gold = action.currency || rs.gold;
     rs.currentStamina = action.stamina || rs.currentStamina;
-    console.log('w00t XP', rs.experience);
     return rs;
   },
   UPDATE_LEVEL: (returnState, action) => {
@@ -38,7 +37,6 @@ const actionHandlers = {
     const rs = returnState;
 
     rs.experience = action.xp;
-    console.log('w00t00t XP', rs.experience);
     return rs;
   },
   UPDATE_GOLD: (returnState, action) => {

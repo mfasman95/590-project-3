@@ -45,7 +45,7 @@ class Adventure extends React.Component {
 //Function to map the redux state to object properties
 const mapStateToProps = (state, ownProps) => ({
   gameState: state.gameState,
-  friendKey: state.party.activeFriend.key,
+  friendKey: state.party.activeFriend.owner,
 });
 
 export default connect(mapStateToProps)(Adventure);

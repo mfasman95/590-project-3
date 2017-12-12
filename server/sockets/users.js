@@ -15,14 +15,12 @@ module.exports.getUserByDBID = (id) => {
 
   let retUser = null;
 
-  console.log(userKeys);
   for (let i = 0; i < userKeys.length; i++) {
     const user = users[userKeys[i]];
 
     // If the user has disconnected while this function is running, skip past them
     if (!user) continue;
 
-    console.log(user.userRowId, id);
     // Check if this is the user you are looking for
     if (user.userRowId === id) {
       retUser = user;

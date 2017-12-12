@@ -47,8 +47,8 @@ const convertFriend = (friend) => {
   const cardKey = Object.keys(friend[ownerKey])[0];
   const sharedAdventurer = friend[ownerKey][cardKey];
 
-  sharedAdventurer.owner = ownerKey;
-  sharedAdventurer.key = cardKey;
+  sharedAdventurer.owner = parseInt(ownerKey, 10);
+  sharedAdventurer.key = parseInt(cardKey, 10);
 
   return sharedAdventurer;
 };
@@ -278,10 +278,9 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
           })
           .then(() => db.getUserData([friendId]))
           .then(({ xp }) => {
-            const xpGained = Math.floor(encounterExperience * 0.25)
+            const xpGained = Math.floor(encounterExperience * 0.25);
             const newFriendXp = xp + xpGained;
             const friend = getUserByDBID(friendId);
-            console.log(friend);
             if (friend) {
               reduxEmit(new Message('UPDATE_EXPERIENCE', { xp: newFriendXp }))(friend.socket);
               reduxEmit(new Message('RRS_SHOW_SNACK', {
@@ -293,7 +292,7 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
                     button: { label: 'x' },
                   },
                 },
-              }));
+              }))(friend.socket);
             } else {
               // TODO: Store this message for later?
             }
@@ -356,11 +355,9 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
       const { userRowId } = getUser(socket.hash);
 
       return db.rollGatcha([userRowId, gatchaTypes[type]])
-        .then((res) => {
-          // Returns an adventurer in full data for your display pleasure
-          // TODO: Actually display said returned entity
-          console.log(res);
-        })
+        // Returns an adventurer in full data for your display pleasure
+        // TODO: Actually display said returned entity
+        .then(() => null)
         .catch((err) => {
           errorHandling(err);
           return reduxErrorEmit(rdxErrTypes.rollGatcha)(socket);
