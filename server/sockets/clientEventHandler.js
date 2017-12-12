@@ -78,9 +78,10 @@ const changePage = (page, socket) => {
       break;
     }
     case 'Home': {
-      sendList(socket, 'SET_ACTIVE_FRIEND', 'activeFriend', db.getActiveFriend, [userRowId]);
-
-      db.getActive([userRowId])
+      // sendList(socket, 'SET_ACTIVE_FRIEND', 'activeFriend', db.getActiveFriend, [userRowId]);
+      db.getActiveFriend([userRowId])
+        .then(val => reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: convertFriend(val) }))(socket))
+        .then(() => db.getActive([userRowId]))
         .then(party => reduxEmit(new Message('UPDATE_PARTY', {
           partyMembers: party,
         }))(socket))
@@ -430,7 +431,7 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
         .then(promiseAllKeys(0, userRowId, db.setActiveFriend))
         .then(() => db.setActiveFriend([1, userRowId, data.id]))
         .then(() => db.getActiveFriend([userRowId]))
-        .then(val => reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: val[data.id], owner: data.id }))(socket))
+        .then(val => reduxEmit(new Message('SET_ACTIVE_FRIEND', { activeFriend: convertFriend(val) }))(socket))
         .catch((err) => {
           errorHandling(err);
           return reduxErrorEmit(rdxErrTypes.setActiveFriend)(socket);
