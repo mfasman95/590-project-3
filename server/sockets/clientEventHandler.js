@@ -246,7 +246,7 @@ module.exports.clientEmitHandler = (sock, { event, data }) => {
     }
     case 'adventureEnd': {
       // Check parameters
-      if (!data.success || !data.friendId || !data.encounterId) {
+      if (data.success === undefined || !data.friendId || !data.encounterId) {
         return reduxErrorEmit({
           code: 'MissingParams',
           message: 'Success, Friend ID, and Encounter Token is required.',
